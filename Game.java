@@ -1,10 +1,11 @@
+import java.time.LocalDateTime;
+
 public class Game extends WeeklyEvent {
     public Team homeTeam;
     public Team awayTeam;
     public String venue;
-    public String time;
-    public String date;
-    public boolean isPrimeTime;
+    public LocalDateTime dateTime;
+    public String specialTitle;
     public int homeScore;
     public int awayScore;
     public int overtimes;
@@ -13,15 +14,14 @@ public class Game extends WeeklyEvent {
 
     }
 
-    public Game(Team iHometeam, Team iAwayTeam, String iVenue, String iTime, String iDate, boolean iIsPrimeTime, int iHomeScore, int iAwayScore, int iOvertimes) {
+    public Game(Team iHomeTeam, Team iAwayTeam, String iVenue, LocalDateTime iDateTime, String iSpecialTitle, int iHomeScore, int iAwayScore, int iOvertimes) {
         this.homeTeam = iHomeTeam;
         this.awayTeam = iAwayTeam;
         this.venue = iVenue;
-        this.time = iTime;
-        this.date = iDate;
-        this.isPrimeTime = iIsPrimeTime;
+        this.dateTime = iDateTime;
+        this.specialTitle = iSpecialTitle;
         this.homeScore = iHomeScore;
-        this.awayscore = iAwayScore;
+        this.awayScore = iAwayScore;
         this.overtimes = iOvertimes;
     }
 }

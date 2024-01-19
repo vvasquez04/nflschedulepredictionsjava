@@ -5,3 +5,7 @@ public class PredictionsRunner {
         
     }
 }
+
+
+//TODO
+//Games.txt file with some weeks filled in (for doing this midseason)

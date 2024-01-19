@@ -22,7 +22,7 @@ public class Team {
 
     }
 
-    public Team(String iName; String iConference, String iRegion) {
+    public Team(String iName, String iConference, String iRegion) {
         this.name = iName;
         this.conference = iConference;
         this.region = iRegion;
@@ -39,6 +39,7 @@ public class Team {
         this.wonDivision = false;
         this.oneSeed = false;
         this.wonConference = false;
-        this.pointsAllowed = 0.0;
-        this.pointsScored = 0.0;
+        this.pointsAllowed = 0;
+        this.pointsScored = 0;
     }
+}
