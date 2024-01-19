@@ -5,4 +5,9 @@ public class WeeklyEvent {
     public static void main(String[] args) {
 
     }
+
+    public WeeklyEvent(boolean iIsByeWeek, boolean iIsEmptyWeek) {
+        this.isByeWeek = iIsByeWeek;
+        this.isEmptyWeek = iIsEmptyWeek;
+    }
 }

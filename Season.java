@@ -5,6 +5,10 @@ public class Season {
 
 
     public static void main(String[] args) {
-        
+
+    }
+
+    public Season(ArrayList<Week> iWeeks) {
+        this.weeks = iWeeks;
     }
 }

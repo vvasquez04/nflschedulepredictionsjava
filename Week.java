@@ -6,6 +6,12 @@ public class Week {
     public ArrayList<WeeklyEvent> events;
 
     public static void main(String[] args) {
-        
+
+    }
+
+    public Week(boolean iIsPlayoffs, int iWeekNumber, ArrayList<WeeklyEvent> iEvents) {
+        this.isPlayoffs = iIsPlayoffs;
+        this.weekNumber = iWeekNumber;
+        this.events = iEvents;
     }
 }
