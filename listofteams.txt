@@ -1,0 +1,32 @@
+Philadelphia Eagles,NFC,East
+New York Giants,NFC,East
+Washington Commanders,NFC,East
+Dallas Cowboys,NFC,East
+Minnesota Vikings,NFC,North
+Green Bay Packers,NFC,North
+Detroit Lions,NFC,North
+Chicago Bears,NFC,North
+Seattle Seahawks,NFC,West
+San Francisco 49ers,NFC,West
+Arizona Cardinals,NFC,West
+Los Angeles Rams,NFC,West
+New Orleans Saints,NFC,South
+Tampa Bay Buccaneers,NFC,South
+Carolina Panthers,NFC,South
+Atlanta Falcons,NFC,South
+New England Patriots,AFC,East
+Buffalo Bills,AFC,East
+Miami Dolphins,AFC,East
+New York Jets,AFC,East
+Pittsburgh Steelers,AFC,North
+Baltimore Ravens,AFC,North
+Cincinnati Bengals,AFC,North
+Cleveland Browns,AFC,North
+Los Angeles Chargers,AFC,West
+Kansas City Chiefs,AFC,West
+Las Vegas Raiders,AFC,West
+Denver Broncos,AFC,West
+Jacksonville Jaguars,AFC,West
+Tennessee Titans,AFC,West
+Houston Texans,AFC,West
+Indianapolis Colts,AFC,West
