@@ -1,3 +1,4 @@
+1
 Detroit Lions,Kansas City Chiefs,GEHA Field at Arrowhead Stadium,2023-09-07T20:20,NFL Kickoff Game 2023
 Cincinnati Bengals,Cleveland Browns,Cleveland Browns Stadium,2023-09-10T13:00,`
 Houston Texans,Baltimore Ravens,M&T Bank Stadium,2023-09-10T13:00,`
@@ -14,6 +15,7 @@ Las Vegas Raiders,Denver Broncos,Empower Field at Mile High,2023-09-10T16:25,`
 Los Angeles Rams,Seattle Seahawks,Lumen Field,2023-09-10T16:25,`
 Dallas Cowboys,New York Giants,MetLife Stadium,2023-09-10T20:20,Sunday Night Football
 Buffalo Bills,New York Jets,MetLife Stadium,2023-09-11T20:15,Monday Night Football
+END
 2
 Minnesota Vikings,Philadelphia Eagles,Lincoln Financial Field,2023-09-14T20:15,Thursday Night Football
 Green Bay Packers,Atlanta Falcons,Mercedes-Benz Stadium,2023-09-17T13:00,`
@@ -31,6 +33,7 @@ Washington Commanders,Denver Broncos,Empower Field at Mile High,2023-09-17T16:25
 Miami Dolphins,New England Patriots,Gillette Stadium,2023-09-17T20:20,Sunday Night Football
 New Orleans Saints,Carolina Panthers,Bank of America Stadium,2023-09-18T19:15,Monday Night Football
 Cleveland Browns,Pittsburgh Steelers,Acrisure Stadium,2023-09-18T20:15,Monday Night Football
+END
 3
 New York Giants,San Francisco 49ers,Levi's Stadium,2023-09-21T20:15,Thursday Night Football
 Indianapolis Colts,Baltimore Ravens,M&T Bank Stadium,2023-09-24T13:00,`
@@ -47,6 +50,7 @@ Chicago Bears,Kansas City Chiefs,GEHA Field at Arrowhead Stadium,2023-09-24T16:2
 Pittsburgh Steelers,Las Vegas Raiders,Allegiant Stadium,2023-09-24T20:20,Sunday Night Football
 Philadelphia Eagles,Tampa Bay Buccaneers,Raymond James Stadium,2023-09-25T19:15,Monday Night Football
 Los Angeles Rams,Cincinnati Bengals,Paycor Stadium,2023-09-25T20:15,Monday Night Football
+END
 4
 Detroit Lions,Green Bay Packers,Lambeau Field,2023-09-28T20:15,Thursday Night Football
 Atlanta Falcons,Jacksonville Jaguars,Wembley Stadium,2023-10-01T09:30,NFL International London
@@ -64,6 +68,7 @@ New England Patriots,Dallas Cowboys,AT&T Stadium,2023-10-01T16:25,`
 Arizona Cardinals,San Francisco 49ers,Levi's Stadium,2023-10-01T16:25,`
 Kansas City Chiefs,New York Jets,MetLife Stadium,2023-10-01T20:20,Sunday Night Football
 Seattle Seahawks,New York Giants,MetLife Stadium,2023-10-02T20:15,Monday Night Football
+END
 5
 Chicago Bears,Washington Commanders,FedEx Field,2023-10-05T20:15,Thursday Night Football
 Jacksonville Jaguars,Buffalo Bills,Tottenham Hotspur Stadium,2023-10-08T09:30,NFL International London
@@ -79,6 +84,7 @@ New York Jets,Denver Broncos,Empower Field at Mile High,2023-10-08T16:25,`
 Kansas City Chiefs,Minnesota Vikings,US Bank Stadium,2023-10-08T16:25,`
 Dallas Cowboys,San Francisco 49ers,Levi's Stadium,2023-10-08T20:20,Sunday Night Football
 Green Bay Packers,Las Vegas Raiders,Allegiant Stadium,2023-10-09T20:15,Monday Night Football
+END
 6
 Denver Broncos,Kansas City Chiefs,GEHA Field at Arrowhead Stadium,2023-10-12T20:15,Thursday Night Football
 Baltimore Ravens,Tennessee Titans,Tottenham Hotspur Stadium,2023-10-15T09:30,NFL International London
@@ -94,6 +100,7 @@ Arizona Cardinals,Los Angeles Rams,SoFi Stadium,2023-10-15T16:25,`
 Philadelphia Eagles,New York Jets,MetLife Stadium,2023-10-15T16:25,`
 New York Giants,Buffalo Bills,Highmark Stadium,2023-10-15T20:20,Sunday Night Football
 Dallas Cowboys,Los Angeles Chargers,SoFi Stadium,2023-10-16T20:15,Monday Night Football
+END
 7
 Jacksonville Jaguars,New Orleans Saints,Caesars Stadium,2023-10-19T20:15,Thursday Night Football
 Detroit Lions,Baltimore Ravens,M&T Bank Stadium,2023-10-22T13:00,`
@@ -108,6 +115,7 @@ Green Bay Packers,Denver Broncos,Empower Field at Mile High,2023-10-22T16:25,`
 Los Angeles Chargers,Kansas City Chiefs,GEHA Field at Arrowhead Stadium,2023-10-22T16:25,`
 Miami Dolphins,Philadelphia Eagles,Lincoln Financial Field,2023-10-22T20:20,Sunday Night Football
 San Francisco 49ers,Minnesota Vikings,US Bank Stadium,2023-10-23T20:15,Monday Night Football
+END
 8
 Tampa Bay Buccaneers,Buffalo Bills,Highmark Stadium,2023-10-26T20:15,Thursday Night Football
 Houston Texans,Carolina Panthers,Bank of America Stadium,2023-10-29T13:00,`
@@ -125,6 +133,7 @@ Kansas City Chiefs,Denver Broncos,Empower Field at Mile High,2023-10-29T16:25,`
 Cincinnati Bengals,San Francisco 49ers,Levi's Stadium,2023-10-29T16:25,`
 Chicago Bears,Los Angeles Chargers,SoFi Stadium,2023-10-29T20:20,Sunday Night Football
 Las Vegas Raiders,Detroit Lions,Ford Field,2023-10-30T20:15,Monday Night Football
+END
 9
 Tennessee Titans,Pittsburgh Steelers,Acrisure Stadium,2023-11-02T20:15,Thursday Night Football
 Miami Dolphins,Kansas City Chiefs,Frankfurt Stadium,2023-11-05T09:30,NFL International Germany
@@ -140,6 +149,7 @@ New York Giants,Las Vegas Raiders,Allegiant Stadium,2023-11-05T16:25,`
 Dallas Cowboys,Philadelphia Eagles,Lincoln Financial Field,2023-11-05T16:25,`
 Buffalo Bills,Cincinnati Bengals,Paycor Stadium,2023-11-05T20:20,Sunday Night Football
 Los Angeles Chargers,New York Jets,MetLife Stadium,2023-11-06T20:15,Monday Night Football
+END
 10
 Carolina Panthers,Chicago Bears,Solider Field,2023-11-09T20:15,Thursday Night Football
 Indianapolis Colts,New England Patriots,Deutsche Bank Park,2023-11-12T09:30,NFL International Germany
@@ -155,6 +165,7 @@ New York Giants,Dallas Cowboys,AT&T Stadium,2023-11-12T16:25,`
 Washington Commanders,Seattle Seahawks,Lumen Field,2023-11-12T16:25,`
 New York Jets,Las Vegas Raiders,Allegiant Stadium,2023-11-12T20:20,Sunday Night Football
 Denver Broncos,Buffalo Bills,Highmark Stadium,2023-11-13T20:15,Monday Night Football
+END
 11
 Cincinnati Bengals,Baltimore Ravens,M&T Bank Stadium,2023-11-16T20:15,Thursday Night Football
 Dallas Cowboys,Carolina Panthers,Bank of America Stadium,2023-11-19T13:00,`
@@ -170,6 +181,7 @@ New York Jets,Buffalo Bills,Highmark Stadium,2023-11-19T16:25,`
 Seattle Seahawks,Los Angeles Rams,SoFi Stadium,2023-11-19T16:25,`
 Minnesota Vikings,Denver Broncos,Empower Field at Mile High,2023-11-19T20:20,Sunday Night Football
 Philadelphia Eagles,Kansas City Chiefs,GEHA Field at Arrowhead Stadium,2023-11-20T20:15,Monday Night Football
+END
 12
 Green Bay Packers,Detroit Lions,Ford Field,2023-11-23T12:30,Thanksgiving Day
 Washington Commanders,Dallas Cowboys,AT&T Stadium,2023-11-23T16:30,Thanksgiving Day
@@ -187,6 +199,7 @@ Kansas City Chiefs,Las Vegas Raiders,Allegiant Stadium,2023-11-26T16:25,`
 Buffalo Bills,Philadelphia Eagles,Lincoln Financial Field,2023-11-26T16:25,`
 Baltimore Ravens,Los Angeles Chargers,SoFi Stadium,2023-11-26T20:20,Sunday Night Football
 Chicago Bears,Minnesota Vikings,US Bank Stadium,2023-11-27T20:15,Monday Night Football
+END
 13
 Seattle Seahawks,Dallas Cowboys,AT&T Stadium,2023-11-30T20:15,Thursday Night Football
 Los Angeles Chargers,New England Patriots,Gillette Stadium,2023-12-03T13:00,`
@@ -198,9 +211,10 @@ Indianapolis Colts,Tennessee Titans,Nissan Stadium,2023-12-03T13:00,`
 Miami Dolphins,Washington Commanders,FedEx Field,2023-12-03T13:00,`
 Denver Broncos,Houston Texans,NRG Stadium,2023-12-03T16:05,`
 Cleveland Browns,Los Angeles Rams,SoFi Stadium,2023-12-03T16:25,`
-San Francisco 49ers,Philadelphia Eagles,Lincoln Financial Field,2023-12-03T16:25,
+San Francisco 49ers,Philadelphia Eagles,Lincoln Financial Field,2023-12-03T16:25,`
 Kansas City Chiefs,Green Bay Packers,Lambeau Field,2023-12-03T20:20,Sunday Night Football
 Cincinnati Bengals,Jacksonville Jaguars,TIAA Bank Stadium,2023-12-04T20:15,Monday Night Football
+END
 14
 New England Patriots,Pittsburgh Steelers,Acrisure Stadium,2023-12-07T20:15,Thursday Night Football
 Tampa Bay Buccaneers,Atlanta Falcons,Mercedes-Benz Stadium,2023-12-10T13:00,`
@@ -216,6 +230,7 @@ Buffalo Bills,Kansas City Chiefs,GEHA Field at Arrowhead Stadium,2023-12-10T16:2
 Denver Broncos,Los Angeles Chargers,SoFi Stadium,2023-12-10T16:25,`
 Philadelphia Eagles,Dallas Cowboys,AT&T Stadium,2023-12-10T20:20,Sunday Night Football
 Tennessee Titans,Miami Dolphins,Hard Rock Stadium,2023-12-11T20:15,Monday Night Football
+END
 15
 Los Angeles Chargers,Las Vegas Raiders,Allegiant Stadium,2023-12-14T20:15,Thursday Night Football
 Tampa Bay Buccaneers,Green Bay Packers,Lambeau Field,2023-12-17T13:00,`
@@ -233,6 +248,7 @@ Washington Commanders,Los Angeles Rams,SoFi Stadium,2023-12-17T16:05,`
 Dallas Cowboys,Buffalo Bills,Highmark Stadium,2023-12-17T16:25,`
 Baltimore Ravens,Jacksonville Jaguars,TIAA Bank Field,2023-12-17T20:20,Sunday Night Football
 Philadelphia Eagles,Seattle Seahawks,Lumen Field,2023-12-18T20:15,Monday Night Football
+END
 16
 New Orleans Saints,Los Angeles Rams,SoFi Stadium,2023-12-21T20:15,Thursday Night Football
 Cincinnati Bengals,Pittsburgh Steelers,Acrisure Stadium,2023-12-23T16:30,`
@@ -250,6 +266,7 @@ New England Patriots,Denver Broncos,Empower Field at Mile High,2023-12-24T20:15,
 Las Vegas Raiders,Kansas City Chiefs,GEHA Field at Arrowhead Stadium,2023-12-25T13:00,Christmas Day
 New York Giants,Philadelphia Eagles,Lincoln Financial Field,2023-12-25T16:30,Christmas Day
 Baltimore Ravens,San Francisco 49ers,Levi's Stadium,2023-12-25T20:15,Christmas Day
+END
 17
 New York Jets,Cleveland Browns,Cleveland Browns Stadium,2023-12-28T20:15,Thursday Night Football
 Detroit Lions,Dallas Cowboys,AT&T Stadium,2023-12-30T20:15,Saturday Night Football
@@ -267,6 +284,7 @@ Pittsburgh Steelers,Seattle Seahawks,Lumen Field,2023-12-31T16:05,`
 Los Angeles Chargers,Denver Broncos,Empower Field at Mile High,2023-12-31T16:25,`
 Cincinnati Bengals,Kansas City Chiefs,GEHA Field at Arrowhead Stadium,2023-12-31T16:25,`
 Green Bay Packers,Minnesota Vikings,US Bank Stadium,2023-12-31T20:20,Sunday Night Football
+END
 18
 Seattle Seahawks,Arizona Cardinals,State Farm Stadium,2024-01-07T13:00,`
 Pittsburgh Steelers,Baltimore Ravens,M&T Bank Stadium,2024-01-07T13:00,`
@@ -284,3 +302,4 @@ Philadelphia Eagles,New York Giants,MetLife Stadium,2024-01-07T13:00,`
 Los Angeles Rams,San Francisco 49ers,Levi's Stadium,2024-01-07T13:00,`
 Jacksonville Jaguars,Tennessee Titans,Nissan Stadium,2024-01-07T13:00,`
 Dallas Cowboys,Washington Commanders,FedEx Field,2024-01-07T13:00,`
+END

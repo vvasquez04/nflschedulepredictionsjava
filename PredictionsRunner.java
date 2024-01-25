@@ -9,7 +9,7 @@ public class PredictionsRunner {
 
         //Read games.txt and instantiate the Season object (and therefore the WeeklyEvent, Week, and Game objects for this season)
         ArrayList<Game> allGames = new ArrayList<Game>();
-        readGames(allGames);
+        readSeason(allGames);
     }
 
     //Use StdIn to read listofteams.txt and create a new Team object for each line
@@ -24,13 +24,25 @@ public class PredictionsRunner {
     }
 
     //Use StdIn to read games.txt and populate a Season object (and therefore the objects it depends on)
-    public static void readGames(ArrayList<Game> games) {
+    public static void readSeason(ArrayList<Game> games) {
         In in = new In("games.txt");
         while(in.hasNextLine()) {
-            String gameString = in.readLine();
-            String[] gameDetails = gameString.split(",");
+            readWeek(in, games);
+        }
+    }
+
+    //Read a week of games from games.txt
+    public static void readWeek(In in, ArrayList<Game> games) {
+        int weekNumber = Integer.parseInt(in.readLine());
+        String endStr = "";
+        while(!(endStr.equals("END"))) {
+            endStr = in.readLine();
+            if(endStr.equals("END")) { break; }
+            String[] gameDetails = endStr.split(",");
             for(int i = 0; i < 5; i++) {
                 System.out.println(gameDetails[i]);
+                if(gameDetails[4].equals("`")) { gameDetails[4] = ""; }
+                //TODO: have to match home/away with the Teams in the ArrayList
             }
         }
     }
