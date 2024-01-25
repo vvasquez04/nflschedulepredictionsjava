@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.time.LocalDateTime;
 
 public class PredictionsRunner {
 
@@ -9,7 +10,7 @@ public class PredictionsRunner {
 
         //Read games.txt and instantiate the Season object (and therefore the WeeklyEvent, Week, and Game objects for this season)
         ArrayList<Game> allGames = new ArrayList<Game>();
-        readSeason(allGames);
+        readSeason(allGames, allTeams);
     }
 
     //Use StdIn to read listofteams.txt and create a new Team object for each line
@@ -24,25 +25,63 @@ public class PredictionsRunner {
     }
 
     //Use StdIn to read games.txt and populate a Season object (and therefore the objects it depends on)
-    public static void readSeason(ArrayList<Game> games) {
+    public static void readSeason(ArrayList<Game> games, ArrayList<Team> teams) {
         In in = new In("games.txt");
         while(in.hasNextLine()) {
-            readWeek(in, games);
+            ArrayList<WeeklyEvent> events = new ArrayList<WeeklyEvent>();
+            Week week = new Week(false, 0, events);
+            readWeek(in, games, teams, week);
         }
     }
 
     //Read a week of games from games.txt
-    public static void readWeek(In in, ArrayList<Game> games) {
+    public static void readWeek(In in, ArrayList<Game> games, ArrayList<Team> teams, Week week) {
+        //Read week number before this week's games, create variable for current string being read
         int weekNumber = Integer.parseInt(in.readLine());
-        String endStr = "";
-        while(!(endStr.equals("END"))) {
-            endStr = in.readLine();
-            if(endStr.equals("END")) { break; }
-            String[] gameDetails = endStr.split(",");
-            for(int i = 0; i < 5; i++) {
-                System.out.println(gameDetails[i]);
-                if(gameDetails[4].equals("`")) { gameDetails[4] = ""; }
-                //TODO: have to match home/away with the Teams in the ArrayList
+        System.out.println(weekNumber);
+        String currentStr = "";
+
+        //While week is ongoing, match team names in matchups to their team & populate the schedule
+        while(!(currentStr.equals("END"))) {
+            //Check if more games in the week
+            currentStr = in.readLine();
+            if(currentStr.equals("END")) { break; }
+
+            //Create new Team instances to be populated by the line
+            Team homeTeam = new Team();
+            Team awayTeam = new Team();
+
+            //Split up the string into the actual variables, read them, match home/away team names to the Teams in the ArrayList, and create a new Game instance
+            String[] gameDetails = currentStr.split(",");
+            //If game event isn't special, it should be an emptystring. I had to use accent marks to debug an error w the input file
+            if(gameDetails[4].equals("`")) { gameDetails[4] = ""; }
+            
+            //Match home team
+            for(Team t : teams) {
+                if(t.name.equals(gameDetails[0])) {
+                    awayTeam = t;
+                }
+            }
+
+            //Match away team
+            for(Team t : teams) {
+                if(t.name.equals(gameDetails[1])) {
+                    homeTeam = t;
+                }
+            }
+            
+            System.out.println(homeTeam.name + " " + awayTeam.name);
+            Game newGame = new Game(homeTeam, awayTeam, gameDetails[2], LocalDateTime.parse(gameDetails[3]), gameDetails[4]);
+            games.add(newGame);
+
+            if(weekNumber > 18) { week.isPlayoffs = true; }
+            week.weekNumber = weekNumber;
+            for(Game g : games) {
+                week.events.add(g);
+            }
+            for(WeeklyEvent e : week.events) {
+                Game g = (Game)e;
+                System.out.println(g.homeTeam);
             }
         }
     }

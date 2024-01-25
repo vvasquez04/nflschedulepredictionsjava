@@ -24,4 +24,15 @@ public class Game extends WeeklyEvent {
         this.awayScore = iAwayScore;
         this.overtimes = iOvertimes;
     }
+
+    public Game(Team iHomeTeam, Team iAwayTeam, String iVenue, LocalDateTime iDateTime, String iSpecialTitle) {
+        this.homeTeam = iHomeTeam;
+        this.awayTeam = iAwayTeam;
+        this.venue = iVenue;
+        this.dateTime = iDateTime;
+        this.specialTitle = iSpecialTitle;
+        this.homeScore = 0;
+        this.awayScore = 0;
+        this.overtimes = 0;
+    }
 }

@@ -42,4 +42,8 @@ public class Team {
         this.pointsAllowed = 0;
         this.pointsScored = 0;
     }
+
+    public Team() {
+        
+    }
 }
