@@ -80,8 +80,7 @@ public class PredictionsRunner {
                 week.events.add(g);
             }
             for(WeeklyEvent e : week.events) {
-                Game g = (Game)e;
-                System.out.println(g.homeTeam);
+                System.out.println("x");
             }
         }
     }
@@ -93,4 +92,4 @@ public class PredictionsRunner {
 
 
 
-//CURRENTSTATE: reading games.txt file. Index oob exception, the emptystring after the comma didnt work. Need to make it like a special character or something and then read off of that
+//CURRENTSTATE: reading games.txt file. For some reason looping through all a week's events has way more than expected. Must debug
