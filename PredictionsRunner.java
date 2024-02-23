@@ -39,6 +39,7 @@ public class PredictionsRunner {
         //Read week number before this week's games, create variable for current string being read
         int weekNumber = Integer.parseInt(in.readLine());
         System.out.println(weekNumber);
+        week.weekNumber = weekNumber;
         String currentStr = "";
 
         //While week is ongoing, match team names in matchups to their team & populate the schedule
@@ -73,15 +74,12 @@ public class PredictionsRunner {
             System.out.println(homeTeam.name + " " + awayTeam.name);
             Game newGame = new Game(homeTeam, awayTeam, gameDetails[2], LocalDateTime.parse(gameDetails[3]), gameDetails[4]);
             games.add(newGame);
-
-            if(weekNumber > 18) { week.isPlayoffs = true; }
-            week.weekNumber = weekNumber;
-            for(Game g : games) {
-                week.events.add(g);
-            }
-            for(WeeklyEvent e : week.events) {
-                System.out.println("x");
-            }
+            week.events.add(newGame);
+        }
+        //DEBUGGING WEEK PRINTLN, CAN DELETE
+        for(WeeklyEvent w : week.events) {
+                Game g = (Game)w;
+                System.out.println(g.homeTeam.name + " is at home against " + g.awayTeam.name);
         }
     }
 }
