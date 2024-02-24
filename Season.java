@@ -11,4 +11,8 @@ public class Season {
     public Season(ArrayList<Week> iWeeks) {
         this.weeks = iWeeks;
     }
+
+    public Season() {
+        this.weeks = new ArrayList<Week>();
+    }
 }

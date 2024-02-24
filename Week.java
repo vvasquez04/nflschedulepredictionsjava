@@ -14,4 +14,10 @@ public class Week {
         this.weekNumber = iWeekNumber;
         this.events = iEvents;
     }
+
+    public Week() {
+        this.isPlayoffs = false;
+        this.weekNumber = 0;
+        this.events = new ArrayList<WeeklyEvent>();
+    }
 }
