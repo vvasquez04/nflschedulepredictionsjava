@@ -28,33 +28,119 @@ public class PredictionsRunner {
             for(WeeklyEvent e : w.events) {
                 //Logic for showing a game to the user and predicting it
                 if(e instanceof Game) {
-                    //Display the individual game details
-                    if(!((Game)e).specialTitle.equals("")) {
-                        System.out.println(((Game)e).homeTeam.name + " vs " + ((Game)e).awayTeam.name + " at " + ((Game)e).venue + " on " + ((Game)e).dateTime.toString() + ", " + ((Game)e).specialTitle);
-                    } else {
-                        System.out.println(((Game)e).homeTeam.name + " vs " + ((Game)e).awayTeam.name + " at " + ((Game)e).venue + " on " + ((Game)e).dateTime.toString());
-                    }
-
-                    //Read overtime prediction
-                    System.out.println("Does this game go to OT?");
-                    String overtimeBool = StdIn.readString();
-
-                    //Logic for if game goes to OT
-                    int margin = 2147483647;
-                    if(overtimeBool.trim().toLowerCase().equals("yes")) {
-                        margin = 14;
-                        if(overtimeBool.trim().toLowerCase().equals("yes")) { 
-                            System.out.println("How many overtimes?");
-                            int otNumber = StdIn.readInt();
-                            //TODO: Check for if user puts in string instead
-                            ((Game)e).overtimes = otNumber;
-                        }
-                    }
-
-                    
+                    predictGame((Game)e);
                 }
             }
         }
+    }
+
+    public static void predictGame(Game e) {
+        //Display the individual game details
+        if(!((Game)e).specialTitle.equals("")) {
+            System.out.println(((Game)e).homeTeam.name + " vs " + ((Game)e).awayTeam.name + " at " + ((Game)e).venue + " on " + ((Game)e).dateTime.toString() + ", " + ((Game)e).specialTitle);
+        } else {
+            System.out.println(((Game)e).homeTeam.name + " vs " + ((Game)e).awayTeam.name + " at " + ((Game)e).venue + " on " + ((Game)e).dateTime.toString());
+        }
+
+        int margin = 2147483647;
+
+        margin = overtimeGameLogic((Game)e, margin);
+
+        scoringGameLogic((Game)e, margin);
+    }
+
+    public static void scoringGameLogic(Game e, int margin) {
+        //Read score totals
+        System.out.println("Home team's score:");
+        int homeScore = StdIn.readInt();
+        if(homeScore < 0) {
+            System.out.println("Invalid score");
+            scoringGameLogic(e, margin);
+        }
+        System.out.println("Away team's score:");
+        int awayScore = StdIn.readInt();
+        if(awayScore < 0) {
+            System.out.println("Invalid score");
+            scoringGameLogic(e, margin);
+        }
+        //TODO: error checking for string input
+
+        //If game went to OT, the score has to be within the margin
+        if(margin == 14) {
+            int gameMargin = homeScore - awayScore;
+            if((gameMargin > margin) || (gameMargin < -(margin))) {
+                System.out.println("Game margin is too large for an overtime score! Re-enter the scores:");
+                scoringGameLogic(e, margin);
+            }
+        }
+
+        //Update game scores and add points to Teams' point differentials
+        e.homeScore = homeScore;
+        e.awayScore = awayScore;
+        e.homeTeam.pointsScored += homeScore;
+        e.awayTeam.pointsScored += awayScore;
+
+        //Update general W/L/T records for both teams
+        if(homeScore > awayScore) {
+            e.homeTeam.wins++;
+            e.awayTeam.losses++;
+        } else if (awayScore > homeScore) {
+            e.awayTeam.wins++;
+            e.homeTeam.losses++;
+        } else {
+            e.homeTeam.ties++;
+            e.awayTeam.ties++;
+        }
+
+        //Update conference W/L/T records, if applicable
+        if(e.homeTeam.conference.equals(e.awayTeam.conference)) {
+            if(homeScore > awayScore) {
+                e.homeTeam.confWins++;
+                e.awayTeam.confLosses++;
+            } else if (awayScore > homeScore) {
+                e.awayTeam.confWins++;
+                e.homeTeam.confLosses++;
+            } else {
+                e.homeTeam.confTies++;
+                e.awayTeam.confTies++;
+            }
+        }
+
+        //Update division W/L/T records, if applicable
+        if(e.homeTeam.division.equals(e.awayTeam.division)) {
+            if(homeScore > awayScore) {
+                e.homeTeam.divWins++;
+                e.awayTeam.divLosses++;
+            } else if (awayScore > homeScore) {
+                e.awayTeam.divWins++;
+                e.homeTeam.divLosses++;
+            } else {
+                e.homeTeam.divTies++;
+                e.awayTeam.divTies++;
+            }
+        }
+
+    }
+
+    public static int overtimeGameLogic(Game e, int margin) {
+        //Read overtime prediction
+        System.out.println("Does this game go to OT?");
+        String overtimeBool = StdIn.readString();
+        //TODO: Make sure overtimeBool is y/n
+
+        System.out.println(overtimeBool.trim().toLowerCase());
+        //Logic for if game goes to OT
+        if(overtimeBool.trim().toLowerCase().equals("yes")) {
+            margin = 14;
+            if(overtimeBool.trim().toLowerCase().equals("yes")) { 
+                System.out.println("How many overtimes?");
+                int otNumber = StdIn.readInt();
+                //TODO: Check for if user puts in string instead
+                ((Game)e).overtimes = otNumber;
+            }
+        }
+
+        return margin;
     }
 
     //Consider this the "start menu" when 'start' is first inputted

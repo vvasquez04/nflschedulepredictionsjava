@@ -1,7 +1,7 @@
 public class Team {
     public String name;
     public String conference;
-    public String region;
+    public String division;
     public int wins;
     public int losses;
     public int ties;
@@ -22,10 +22,10 @@ public class Team {
 
     }
 
-    public Team(String iName, String iConference, String iRegion) {
+    public Team(String iName, String iConference, String iDivision) {
         this.name = iName;
         this.conference = iConference;
-        this.region = iRegion;
+        this.division = iDivision;
         this.wins = 0;
         this.losses = 0;
         this.ties = 0;
