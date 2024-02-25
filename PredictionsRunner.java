@@ -19,18 +19,47 @@ public class PredictionsRunner {
         mainMenu(userInput, season, allTeams);
     }
 
+    //Core logic for predicting each game
     public static void predictionsStart(Season season, ArrayList<Team> allTeams) {
+        //Cycle through each week in the logic
         for(Week w : season.weeks) {
             System.out.println(w.weekNumber);
+            //Cycle through each game (or bye week, etc) in the week
             for(WeeklyEvent e : w.events) {
+                //Logic for showing a game to the user and predicting it
                 if(e instanceof Game) {
-                    System.out.println(((Game)e).homeTeam.name + " vs " + ((Game)e).awayTeam.name);
+                    //Display the individual game details
+                    if(!((Game)e).specialTitle.equals("")) {
+                        System.out.println(((Game)e).homeTeam.name + " vs " + ((Game)e).awayTeam.name + " at " + ((Game)e).venue + " on " + ((Game)e).dateTime.toString() + ", " + ((Game)e).specialTitle);
+                    } else {
+                        System.out.println(((Game)e).homeTeam.name + " vs " + ((Game)e).awayTeam.name + " at " + ((Game)e).venue + " on " + ((Game)e).dateTime.toString());
+                    }
+
+                    //Read overtime prediction
+                    System.out.println("Does this game go to OT?");
+                    String overtimeBool = StdIn.readString();
+
+                    //Logic for if game goes to OT
+                    int margin = 2147483647;
+                    if(overtimeBool.trim().toLowerCase().equals("yes")) {
+                        margin = 14;
+                        if(overtimeBool.trim().toLowerCase().equals("yes")) { 
+                            System.out.println("How many overtimes?");
+                            int otNumber = StdIn.readInt();
+                            //TODO: Check for if user puts in string instead
+                            ((Game)e).overtimes = otNumber;
+                        }
+                    }
+
+                    
                 }
             }
         }
     }
 
+    //Consider this the "start menu" when 'start' is first inputted
     public static void mainMenu(String userInput, Season season, ArrayList<Team> allTeams) {
+        //Switch case depending on user input, essentially making the menu work
         switch(userInput.toLowerCase()) {
             case ("help"):
                 System.out.println("help stuff");
