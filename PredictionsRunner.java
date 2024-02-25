@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.time.LocalDateTime;
 
 public class PredictionsRunner {
@@ -23,7 +25,7 @@ public class PredictionsRunner {
     public static void predictionsStart(Season season, ArrayList<Team> allTeams) {
         //Cycle through each week in the logic
         for(Week w : season.weeks) {
-            System.out.println(w.weekNumber);
+            System.out.println("Week " + w.weekNumber);
             //Cycle through each game (or bye week, etc) in the week
             for(WeeklyEvent e : w.events) {
                 //Logic for showing a game to the user and predicting it
@@ -31,6 +33,85 @@ public class PredictionsRunner {
                     predictGame((Game)e);
                 }
             }
+            updateStandings(allTeams);
+        }
+    }
+
+    //Update standings upon request or at end of each regular season week
+    public static void updateStandings(ArrayList<Team> allTeams) {
+        //Instantiate arrayLists for conferences
+        ArrayList<Team> afcTeams = new ArrayList<Team>();
+        ArrayList<Team> nfcTeams = new ArrayList<Team>();
+
+        //Instantiate arrayLists for divisions
+        ArrayList<Team> afcEast = new ArrayList<Team>();
+        ArrayList<Team> afcNorth = new ArrayList<Team>();
+        ArrayList<Team> afcWest = new ArrayList<Team>();
+        ArrayList<Team> afcSouth = new ArrayList<Team>();
+        ArrayList<Team> nfcEast = new ArrayList<Team>();
+        ArrayList<Team> nfcNorth = new ArrayList<Team>();
+        ArrayList<Team> nfcWest = new ArrayList<Team>();
+        ArrayList<Team> nfcSouth = new ArrayList<Team>();
+
+        //Add teams to conference arrayLists
+        for(Team t : allTeams) {
+            if(t.conference.equals("AFC")) {
+                afcTeams.add(t);
+            } else {
+                nfcTeams.add(t);
+            }
+        }
+
+        //Add teams to division arrayLists
+        for(Team t : afcTeams) {
+            if(t.division.equals("East")) {
+                afcEast.add(t);
+            } else if (t.division.equals("North")) {
+                afcNorth.add(t);
+            } else if (t.division.equals("West")) {
+                afcWest.add(t);
+            } else {
+                afcSouth.add(t);
+            }
+        }
+        for(Team t : nfcTeams) {
+            if(t.division.equals("East")) {
+                nfcEast.add(t);
+            } else if (t.division.equals("North")) {
+                nfcNorth.add(t);
+            } else if (t.division.equals("West")) {
+                nfcWest.add(t);
+            } else {
+                nfcSouth.add(t);
+            }
+        }
+
+        //Convert arrayLists to unsorted arrays
+        Team[] rawAfcTeamsArr = afcTeams.toArray(new Team[afcTeams.size()]);
+        Team[] rawNfcTeamsArr = nfcTeams.toArray(new Team[nfcTeams.size()]);
+        Team[] rawAfcEastArr = afcEast.toArray(new Team[afcEast.size()]);
+        Team[] rawAfcNorthArr = afcNorth.toArray(new Team[afcNorth.size()]);
+        Team[] rawAfcWestArr = afcWest.toArray(new Team[afcWest.size()]);
+        Team[] rawAfcSouthArr = afcSouth.toArray(new Team[afcSouth.size()]);
+        Team[] rawNfcEastArr = nfcEast.toArray(new Team[nfcEast.size()]);
+        Team[] rawNfcNorthArr = nfcNorth.toArray(new Team[nfcNorth.size()]);
+        Team[] rawNfcWestArr = nfcWest.toArray(new Team[nfcWest.size()]);
+        Team[] rawNfcSouthArr = nfcSouth.toArray(new Team[nfcSouth.size()]);
+
+        //Sort arrays based on wins with no tiebreakers yet
+        Arrays.sort(rawAfcTeamsArr, Comparator.comparingInt(Team::getWins).reversed());
+        Arrays.sort(rawNfcTeamsArr, Comparator.comparingInt(Team::getWins).reversed());
+        Arrays.sort(rawAfcEastArr, Comparator.comparingInt(Team::getWins).reversed());
+        Arrays.sort(rawAfcNorthArr, Comparator.comparingInt(Team::getWins).reversed());
+        Arrays.sort(rawAfcWestArr, Comparator.comparingInt(Team::getWins).reversed());
+        Arrays.sort(rawAfcSouthArr, Comparator.comparingInt(Team::getWins).reversed());
+        Arrays.sort(rawNfcEastArr, Comparator.comparingInt(Team::getWins).reversed());
+        Arrays.sort(rawNfcNorthArr, Comparator.comparingInt(Team::getWins).reversed());
+        Arrays.sort(rawNfcWestArr, Comparator.comparingInt(Team::getWins).reversed());
+        Arrays.sort(rawNfcSouthArr, Comparator.comparingInt(Team::getWins).reversed());
+
+        for(Team t : rawAfcTeamsArr) {
+            System.out.println(t.wins);
         }
     }
 
@@ -128,7 +209,6 @@ public class PredictionsRunner {
         String overtimeBool = StdIn.readString();
         //TODO: Make sure overtimeBool is y/n
 
-        System.out.println(overtimeBool.trim().toLowerCase());
         //Logic for if game goes to OT
         if(overtimeBool.trim().toLowerCase().equals("yes")) {
             margin = 14;
@@ -238,11 +318,3 @@ public class PredictionsRunner {
         }
     }
 }
-
-
-//TODO
-//Games.txt file with some weeks filled in (for doing this midseason)
-
-
-
-//CURRENTSTATE: reading games.txt file. For some reason looping through all a week's events has way more than expected. Must debug

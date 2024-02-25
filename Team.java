@@ -46,4 +46,8 @@ public class Team {
     public Team() {
         
     }
+
+    public int getWins() {
+        return this.wins;
+    }
 }
