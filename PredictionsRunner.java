@@ -124,6 +124,7 @@ public class PredictionsRunner {
     }
 
     //Tiebreak division standings
+    //TODO: Check win % because bye weeks (may have to rework this entire thing)
     public static Team[] divTB(Team[] divisionArr) {
         //Create a map of each list of teams with the same number of wins
         Map<Integer, List<Team>> groupedTeams = Arrays.asList(divisionArr).stream()
@@ -204,7 +205,46 @@ public class PredictionsRunner {
 
     //Step 2: division records
     public static void multiTiebreakerDivStepTwo(List<Team> tiedTeams) {
+        
+        //Set temp win pct to divison win %
+        for(Team t : tiedTeams) {
+            t.tempWinPctAgainstOthers = (double)t.divWins / (double)(t.divWins + t.divLosses);
+        }
+        
+        //Sort based off div record, high to low
+        Collections.sort(tiedTeams, Comparator.comparingDouble(Team::getTempWinPctAgainstOthers).reversed());
 
+        if(tiedTeams.get(0).tempWinPctAgainstOthers != tiedTeams.get(1).tempWinPctAgainstOthers) {
+            // System.out.println(tiedTeams.get(0).name + " has won the tiebreaker based off of h2h win percentage over: " + tiedTeams.get(1).name);
+            List<Team> restOfTeams = tiedTeams.subList(1, tiedTeams.size());
+            // for(Team t : tiedTeams) { System.out.print(t.name + " "); }
+            // System.out.println();
+            // for(Team t : restOfTeams) { System.out.print(t.name + " "); }
+            // System.out.println();
+            breakTieDiv(tiedTeams.get(0).wins, restOfTeams);
+        } else {
+            int breakIndex = 0;
+            boolean foundFirstNonTied = false;
+            for (int i = 1; i < tiedTeams.size(); i++) {
+                if (tiedTeams.get(i).tempWinPctAgainstOthers != tiedTeams.get(i - 1).tempWinPctAgainstOthers) {
+                    breakIndex = i;
+                    foundFirstNonTied = true;
+                    break; // Exit the loop once the first non-tied element is found
+                }
+            }
+
+            //Separate into sublists of teams that passed step 1 and didn't
+            List<Team> stillTiedTeams = tiedTeams.subList(0, breakIndex);
+            List<Team> restOfTeams = tiedTeams.subList(breakIndex, tiedTeams.size());
+            
+            //Call step 3 on those still tied, step 1 on the rest
+            multiTiebreakerDivStepThree(stillTiedTeams);
+            breakTieDiv(tiedTeams.get(0).wins, restOfTeams);
+        }
+    }
+
+    public static void multiTiebreakerDivStepThree(List<Team>tiedTeams) {
+        
     }
 
     public static void twoTeamTiebreakerDiv(List<Team> tiedTeams) {
@@ -278,6 +318,7 @@ public class PredictionsRunner {
             e.awayTeam.wins++;
             e.homeTeam.losses++;
         } else {
+            //TODO: check to make sure they didn't say it's a tie without overtime
             e.homeTeam.ties++;
             e.awayTeam.ties++;
         }
