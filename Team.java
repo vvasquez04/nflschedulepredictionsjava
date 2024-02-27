@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Team {
     public String name;
     public String conference;
@@ -17,6 +19,9 @@ public class Team {
     public boolean wonConference;
     public int pointsScored;
     public int pointsAllowed;
+    public ArrayList<Team> teamsPlayed;
+    public ArrayList<Team> teamsBeaten;
+    public double tempWinPctAgainstOthers;
 
     public static void main(String[] args) {
 
@@ -41,6 +46,9 @@ public class Team {
         this.wonConference = false;
         this.pointsAllowed = 0;
         this.pointsScored = 0;
+        this.teamsPlayed = new ArrayList<Team>();
+        this.teamsBeaten = new ArrayList<Team>();
+        this.tempWinPctAgainstOthers = 0.0;
     }
 
     public Team() {
@@ -49,5 +57,9 @@ public class Team {
 
     public int getWins() {
         return this.wins;
+    }
+
+    public double getTempWinPctAgainstOthers() {
+        return this.tempWinPctAgainstOthers;
     }
 }

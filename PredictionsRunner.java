@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.stream.Collectors;
+import java.util.*;
 import java.time.LocalDateTime;
 
 public class PredictionsRunner {
@@ -110,24 +112,87 @@ public class PredictionsRunner {
         Arrays.sort(rawNfcWestArr, Comparator.comparingInt(Team::getWins).reversed());
         Arrays.sort(rawNfcSouthArr, Comparator.comparingInt(Team::getWins).reversed());
 
-        for(Team t : rawAfcTeamsArr) {
-            System.out.println(t.wins);
+        //Tiebreak divisions, put results into new arrays
+        Team[] tiebrokenAfcEast = divTB(rawAfcEastArr);
+        Team[] tiebrokenAfcNorth = divTB(rawAfcNorthArr);
+        Team[] tiebrokenAfcWest = divTB(rawAfcWestArr);
+        Team[] tiebrokenAfcSouth = divTB(rawAfcSouthArr);
+        Team[] tiebrokenNfcEast = divTB(rawAfcEastArr);
+        Team[] tiebrokenNfcNorth = divTB(rawNfcNorthArr);
+        Team[] tiebrokenNfcWest = divTB(rawNfcWestArr);
+        Team[] tiebrokenNfcSouth = divTB(rawNfcSouthArr);
+    }
+
+    //Tiebreak division standings
+    public static Team[] divTB(Team[] divisionArr) {
+        //Create a map of each list of teams with the same number of wins
+        Map<Integer, List<Team>> groupedTeams = Arrays.asList(divisionArr).stream()
+                .collect(Collectors.groupingBy(Team::getWins));
+
+        groupedTeams.forEach(PredictionsRunner::breakTieDiv);
+
+        return new Team[1];
+    }
+
+    //Staging ground for splitting off into different TB scenarios: Division version
+    public static void breakTieDiv(Integer wins, List<Team> tiedTeams) {
+        if(tiedTeams.size() > 2) {
+            multiTiebreakerDiv(tiedTeams);
+        } else { twoTeamTiebreakerDiv(tiedTeams); }
+    }
+
+    public static void multiTiebreakerDiv(List<Team> tiedTeams) {
+        
+        int i = 0;
+        for(Team t : tiedTeams) {
+            double recordAgainstOthers = 0.0;
+            double gamesAgainstOthers = 0;
+            double winsAgainstOthers = 0;
+            for(Team otherTeam : tiedTeams) {
+                if(t.teamsPlayed.contains(otherTeam)) {
+                    gamesAgainstOthers++;
+                    if(t.teamsBeaten.contains(otherTeam)) { winsAgainstOthers++; }
+                }
+            }
+            if (gamesAgainstOthers > 0) {
+            recordAgainstOthers = winsAgainstOthers / gamesAgainstOthers;
+            }
+
+            t.tempWinPctAgainstOthers = recordAgainstOthers;
+            i++;
         }
+
+        Collections.sort(tiedTeams, Comparator.comparingDouble(Team::getTempWinPctAgainstOthers).reversed());
+
+        for(Team t : tiedTeams) {
+            System.out.println(t.name + " winning pct vs div opponents already played & tied with: " + t.tempWinPctAgainstOthers);
+        }
+    }
+
+    public static void twoTeamTiebreakerDiv(List<Team> tiedTeams) {
+        //TODO: logic for this
     }
 
     public static void predictGame(Game e) {
         //Display the individual game details
-        if(!((Game)e).specialTitle.equals("")) {
-            System.out.println(((Game)e).homeTeam.name + " vs " + ((Game)e).awayTeam.name + " at " + ((Game)e).venue + " on " + ((Game)e).dateTime.toString() + ", " + ((Game)e).specialTitle);
+        if(!e.specialTitle.equals("")) {
+            System.out.println(e.homeTeam.name + " vs " + e.awayTeam.name + " at " + e.venue + " on " + e.dateTime.toString() + ", " + e.specialTitle);
         } else {
-            System.out.println(((Game)e).homeTeam.name + " vs " + ((Game)e).awayTeam.name + " at " + ((Game)e).venue + " on " + ((Game)e).dateTime.toString());
+            System.out.println(e.homeTeam.name + " vs " + e.awayTeam.name + " at " + e.venue + " on " + e.dateTime.toString());
         }
 
+        //Max margin of victory possible
         int margin = 2147483647;
 
-        margin = overtimeGameLogic((Game)e, margin);
+        //Set margin depending on if game went to OT
+        margin = overtimeGameLogic(e, margin);
 
-        scoringGameLogic((Game)e, margin);
+        //Read score of game
+        scoringGameLogic(e, margin);
+
+        //Add matchup to list of teams played for each team
+        e.homeTeam.teamsPlayed.add(e.awayTeam);
+        e.awayTeam.teamsPlayed.add(e.homeTeam);
     }
 
     public static void scoringGameLogic(Game e, int margin) {
@@ -155,11 +220,16 @@ public class PredictionsRunner {
             }
         }
 
-        //Update game scores and add points to Teams' point differentials
+        //Update game scores, add points to Teams' point differentials, and add losing team to winning team's teamsBeaten arraylist
         e.homeScore = homeScore;
         e.awayScore = awayScore;
         e.homeTeam.pointsScored += homeScore;
         e.awayTeam.pointsScored += awayScore;
+        if(homeScore > awayScore) {
+            e.homeTeam.teamsBeaten.add(e.awayTeam);
+        } else if (awayScore > homeScore) {
+            e.awayTeam.teamsBeaten.add(e.homeTeam);
+        }
 
         //Update general W/L/T records for both teams
         if(homeScore > awayScore) {
@@ -199,7 +269,7 @@ public class PredictionsRunner {
                 e.homeTeam.divTies++;
                 e.awayTeam.divTies++;
             }
-        }
+        }        
 
     }
 
