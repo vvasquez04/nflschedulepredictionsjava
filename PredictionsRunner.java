@@ -137,13 +137,16 @@ public class PredictionsRunner {
     //Staging ground for splitting off into different TB scenarios: Division version
     public static void breakTieDiv(Integer wins, List<Team> tiedTeams) {
         if(tiedTeams.size() > 2) {
-            multiTiebreakerDiv(tiedTeams);
+            multiTiebreakerDivStepOne(tiedTeams);
+        //NOTE: Make sure in the 2-teamer you check if the list has a size of 1
         } else { twoTeamTiebreakerDiv(tiedTeams); }
     }
 
-    public static void multiTiebreakerDiv(List<Team> tiedTeams) {
+    //Start the tiebreaker process for multiple teams. This is step 1 - head to head among tied teams
+    //NOTE: This doesn't work for 4-team ties. Must investigate
+    public static void multiTiebreakerDivStepOne(List<Team> tiedTeams) {
         
-        int i = 0;
+        //Loop through each tied team and determine its winning percentage against the other teams (if no games, 0.0)
         for(Team t : tiedTeams) {
             double recordAgainstOthers = 0.0;
             double gamesAgainstOthers = 0;
@@ -159,17 +162,53 @@ public class PredictionsRunner {
             }
 
             t.tempWinPctAgainstOthers = recordAgainstOthers;
-            i++;
         }
 
+        //Sort the tied teams, best record first
         Collections.sort(tiedTeams, Comparator.comparingDouble(Team::getTempWinPctAgainstOthers).reversed());
 
         for(Team t : tiedTeams) {
-            System.out.println(t.name + " winning pct vs div opponents already played & tied with: " + t.tempWinPctAgainstOthers);
+            // System.out.println(t.name + " winning pct vs div opponents already played & tied with: " + t.tempWinPctAgainstOthers);
+        }
+
+        //Check if the first team is the only one with the best record. If so, recursively call on the rest of the list
+        //If not, determine how many share a winning % and call step two on them, recursively calling step 1 on those eliminated
+        if(tiedTeams.get(0).tempWinPctAgainstOthers != tiedTeams.get(1).tempWinPctAgainstOthers) {
+            // System.out.println(tiedTeams.get(0).name + " has won the tiebreaker based off of h2h win percentage over: " + tiedTeams.get(1).name);
+            List<Team> restOfTeams = tiedTeams.subList(1, tiedTeams.size());
+            // for(Team t : tiedTeams) { System.out.print(t.name + " "); }
+            // System.out.println();
+            // for(Team t : restOfTeams) { System.out.print(t.name + " "); }
+            // System.out.println();
+            breakTieDiv(tiedTeams.get(0).wins, restOfTeams);
+        } else {
+            int breakIndex = 0;
+            boolean foundFirstNonTied = false;
+            for (int i = 1; i < tiedTeams.size(); i++) {
+                if (tiedTeams.get(i).tempWinPctAgainstOthers != tiedTeams.get(i - 1).tempWinPctAgainstOthers) {
+                    breakIndex = i;
+                    foundFirstNonTied = true;
+                    break; // Exit the loop once the first non-tied element is found
+                }
+            }
+
+            //Separate into sublists of teams that passed step 1 and didn't
+            List<Team> stillTiedTeams = tiedTeams.subList(0, breakIndex);
+            List<Team> restOfTeams = tiedTeams.subList(breakIndex, tiedTeams.size());
+            
+            //Call step 2 on those still tied, step 1 on the rest
+            multiTiebreakerDivStepTwo(stillTiedTeams);
+            breakTieDiv(tiedTeams.get(0).wins, restOfTeams);
         }
     }
 
+    //Step 2: division records
+    public static void multiTiebreakerDivStepTwo(List<Team> tiedTeams) {
+
+    }
+
     public static void twoTeamTiebreakerDiv(List<Team> tiedTeams) {
+        // System.out.println("Got to two team tiebreaker for division: " + tiedTeams.get(0).division);
         //TODO: logic for this
     }
 
