@@ -367,6 +367,115 @@ public class PredictionsRunner {
         }
     }
 
+    //Div step 5: strength of victory
+    public static void multiTiebreakerDivStepFive(List<Team> tiedTeams) {
+        for(Team t : tiedTeams) {
+            double wins = 0.0;
+            double totalGames = 0.0;
+            ArrayList<Team> teamsCovered = new ArrayList<Team>();
+            for(Team beatenTeam : t.teamsBeaten) {
+                if(!teamsCovered.contains(beatenTeam)) {
+                    wins += beatenTeam.wins;
+                    totalGames += (beatenTeam.wins + beatenTeam.losses);
+                    teamsCovered.add(beatenTeam);
+                }
+            }
+            t.tempWinPctAgainstOthers = wins / totalGames;
+        }
+
+        //Sort based off SOV, high to low
+        Collections.sort(tiedTeams, Comparator.comparingDouble(Team::getTempWinPctAgainstOthers).reversed());
+    
+        if(tiedTeams.get(0).tempWinPctAgainstOthers != tiedTeams.get(1).tempWinPctAgainstOthers) {
+            // System.out.println(tiedTeams.get(0).name + " has won the tiebreaker based off of h2h win percentage over: " + tiedTeams.get(1).name);
+            List<Team> restOfTeams = tiedTeams.subList(1, tiedTeams.size());
+            // for(Team t : tiedTeams) { System.out.print(t.name + " "); }
+            // System.out.println();
+            // for(Team t : restOfTeams) { System.out.print(t.name + " "); }
+            // System.out.println();
+            breakTieDiv(tiedTeams.get(0).wins, restOfTeams);
+        } else {
+            int breakIndex = 0;
+            boolean foundFirstNonTied = false;
+            for (int i = 1; i < tiedTeams.size(); i++) {
+                if (tiedTeams.get(i).tempWinPctAgainstOthers != tiedTeams.get(i - 1).tempWinPctAgainstOthers) {
+                    breakIndex = i;
+                    foundFirstNonTied = true;
+                    break; // Exit the loop once the first non-tied element is found
+                }
+            }
+
+            //Separate into sublists of teams that passed step 1 and didn't
+            List<Team> stillTiedTeams = tiedTeams.subList(0, breakIndex);
+            List<Team> restOfTeams = tiedTeams.subList(breakIndex, tiedTeams.size());
+            
+            //Call step 3 on those still tied, step 1 on the rest
+            if(stillTiedTeams.size() > 2) {
+                multiTiebreakerDivStepSix(stillTiedTeams);
+            } else {
+                twoTeamTiebreakerDiv(stillTiedTeams);
+            }            
+            breakTieDiv(tiedTeams.get(0).wins, restOfTeams);
+        }
+    }
+
+    //Div step 6: strength of schedule
+    public static void multiTiebreakerDivStepSix(List<Team> tiedTeams) {
+        for(Team t : tiedTeams) {
+            double wins = 0.0;
+            double totalGames = 0.0;
+            ArrayList<Team> teamsCovered = new ArrayList<Team>();
+            for(Team teamPlayed : t.teamsPlayed) {
+                if(!teamsCovered.contains(teamPlayed)) {
+                    wins += teamPlayed.wins;
+                    totalGames += (teamPlayed.wins + teamPlayed.losses);
+                    teamsCovered.add(teamPlayed);
+                }
+            }
+            t.tempWinPctAgainstOthers = wins / totalGames;
+        }
+
+        //Sort based off SOV, high to low
+        Collections.sort(tiedTeams, Comparator.comparingDouble(Team::getTempWinPctAgainstOthers).reversed());
+    
+        if(tiedTeams.get(0).tempWinPctAgainstOthers != tiedTeams.get(1).tempWinPctAgainstOthers) {
+            // System.out.println(tiedTeams.get(0).name + " has won the tiebreaker based off of h2h win percentage over: " + tiedTeams.get(1).name);
+            List<Team> restOfTeams = tiedTeams.subList(1, tiedTeams.size());
+            // for(Team t : tiedTeams) { System.out.print(t.name + " "); }
+            // System.out.println();
+            // for(Team t : restOfTeams) { System.out.print(t.name + " "); }
+            // System.out.println();
+            breakTieDiv(tiedTeams.get(0).wins, restOfTeams);
+        } else {
+            int breakIndex = 0;
+            boolean foundFirstNonTied = false;
+            for (int i = 1; i < tiedTeams.size(); i++) {
+                if (tiedTeams.get(i).tempWinPctAgainstOthers != tiedTeams.get(i - 1).tempWinPctAgainstOthers) {
+                    breakIndex = i;
+                    foundFirstNonTied = true;
+                    break; // Exit the loop once the first non-tied element is found
+                }
+            }
+
+            //Separate into sublists of teams that passed step 1 and didn't
+            List<Team> stillTiedTeams = tiedTeams.subList(0, breakIndex);
+            List<Team> restOfTeams = tiedTeams.subList(breakIndex, tiedTeams.size());
+            
+            //Call step 3 on those still tied, step 1 on the rest
+            if(stillTiedTeams.size() > 2) {
+                multiTiebreakerDivStepSeven(stillTiedTeams);
+            } else {
+                twoTeamTiebreakerDiv(stillTiedTeams);
+            }            
+            breakTieDiv(tiedTeams.get(0).wins, restOfTeams);
+        }
+    }
+
+    //Div tb step 7: combined ranking of PS and PA
+    public static void multiTiebreakerDivStepSeven(List<Team> tiedTeams) {
+        
+    }
+
     public static void twoTeamTiebreakerDiv(List<Team> tiedTeams) {
         // System.out.println("Got to two team tiebreaker for division: " + tiedTeams.get(0).division);
         //TODO: logic for this
