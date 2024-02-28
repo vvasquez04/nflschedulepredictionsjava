@@ -500,6 +500,8 @@ public class PredictionsRunner {
             t.paPluspsNumber = t.TBPARank + t.TBPSRank;
         }
 
+        Collections.sort(tiedTeams, Comparator.comparingInt(Team::getPaPlusPsNumber));
+
         if(tiedTeams.get(0).paPluspsNumber != tiedTeams.get(1).paPluspsNumber) {
             // System.out.println(tiedTeams.get(0).name + " has won the tiebreaker based off of h2h win percentage over: " + tiedTeams.get(1).name);
             List<Team> restOfTeams = tiedTeams.subList(1, tiedTeams.size());
@@ -533,6 +535,7 @@ public class PredictionsRunner {
         }
     }
 
+    //Div tb step 8: 
     public static void multiTiebreakerDivStepEight(List<Team> tiedTeams, ArrayList<Team> allTeams) {
 
         Collections.sort(allTeams, Comparator.comparingInt(Team::getPointsScored).reversed());
@@ -548,6 +551,8 @@ public class PredictionsRunner {
         for(Team t : tiedTeams) {
             t.paPluspsNumber = t.TBPARank + t.TBPSRank;
         }
+
+        Collections.sort(tiedTeams, Comparator.comparingInt(Team::getPaPlusPsNumber));
 
         if(tiedTeams.get(0).paPluspsNumber != tiedTeams.get(1).paPluspsNumber) {
             // System.out.println(tiedTeams.get(0).name + " has won the tiebreaker based off of h2h win percentage over: " + tiedTeams.get(1).name);

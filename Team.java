@@ -73,6 +73,10 @@ public class Team {
         return this.pointsAllowed;
     }
 
+    public int getPaPlusPsNumber() {
+        return this.paPluspsNumber;
+    }
+
     public double getTempWinPctAgainstOthers() {
         return this.tempWinPctAgainstOthers;
     }
