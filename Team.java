@@ -18,7 +18,10 @@ public class Team {
     public boolean oneSeed;
     public boolean wonConference;
     public int pointsScored;
+    public int TBPARank;
     public int pointsAllowed;
+    public int TBPSRank;
+    public int paPluspsNumber;
     public ArrayList<Team> teamsPlayed;
     public ArrayList<Team> teamsBeaten;
     public double tempWinPctAgainstOthers;
@@ -45,7 +48,10 @@ public class Team {
         this.oneSeed = false;
         this.wonConference = false;
         this.pointsAllowed = 0;
+        this.TBPARank = 0;
         this.pointsScored = 0;
+        this.TBPSRank = 0;
+        this.paPluspsNumber = 0;
         this.teamsPlayed = new ArrayList<Team>();
         this.teamsBeaten = new ArrayList<Team>();
         this.tempWinPctAgainstOthers = 0.0;
@@ -57,6 +63,14 @@ public class Team {
 
     public int getWins() {
         return this.wins;
+    }
+
+    public int getPointsScored() {
+        return this.pointsScored;
+    }
+
+    public int getPointsAllowed() {
+        return this.pointsAllowed;
     }
 
     public double getTempWinPctAgainstOthers() {
