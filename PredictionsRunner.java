@@ -475,7 +475,7 @@ public class PredictionsRunner {
         }
     }
 
-    //Div tb step 7: combined ranking of PS and PA
+    //Div tb step 7: combined ranking of PS and PA in conference
     public static void multiTiebreakerDivStepSeven(List<Team> tiedTeams, ArrayList<Team> allTeams) {
         
         ArrayList<Team> conferenceTeams = new ArrayList<Team>();
@@ -535,7 +535,7 @@ public class PredictionsRunner {
         }
     }
 
-    //Div tb step 8: 
+    //Div tb step 8: combined ranking of PS and PA
     public static void multiTiebreakerDivStepEight(List<Team> tiedTeams, ArrayList<Team> allTeams) {
 
         Collections.sort(allTeams, Comparator.comparingInt(Team::getPointsScored).reversed());
@@ -587,8 +587,9 @@ public class PredictionsRunner {
         }
     }
 
+    //Div tb step 9: net points in common games
     public static void multiTiebreakerDivStepNine(List<Team> tiedTeams, ArrayList<Team> allTeams) {
-        
+        //Finish this later, no tb is gonna go 9 steps lmao
     }
 
     public static void twoTeamTiebreakerDiv(List<Team> tiedTeams, ArrayList<Team> allTeams) {
