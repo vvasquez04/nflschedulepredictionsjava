@@ -370,7 +370,7 @@ public class PredictionsRunner {
         }
     }
 
-    //Div step 5: strength of victory
+    //Div multi tb step 5: strength of victory
     public static void multiTiebreakerDivStepFive(List<Team> tiedTeams, ArrayList<Team> allTeams) {
         for(Team t : tiedTeams) {
             double wins = 0.0;
@@ -422,7 +422,7 @@ public class PredictionsRunner {
         }
     }
 
-    //Div step 6: strength of schedule
+    //Div multi step 6: strength of schedule
     public static void multiTiebreakerDivStepSix(List<Team> tiedTeams, ArrayList<Team> allTeams) {
         for(Team t : tiedTeams) {
             double wins = 0.0;
@@ -474,7 +474,7 @@ public class PredictionsRunner {
         }
     }
 
-    //Div tb step 7: combined ranking of PS and PA in conference
+    //Div multi tb step 7: combined ranking of PS and PA in conference
     public static void multiTiebreakerDivStepSeven(List<Team> tiedTeams, ArrayList<Team> allTeams) {
         
         ArrayList<Team> conferenceTeams = new ArrayList<Team>();
@@ -684,8 +684,126 @@ public class PredictionsRunner {
         }
     }
 
+    //2 team div tb Step 4: conference games
     public static void twoTeamTiebreakerDivStepFour(List<Team> tiedTeams, ArrayList<Team> allTeams) {
-        
+        tiedTeams.get(0).tempWinPctAgainstOthers = (double)tiedTeams.get(0).confWins / ((double)tiedTeams.get(0).confWins + (double)tiedTeams.get(0).confLosses);
+        tiedTeams.get(1).tempWinPctAgainstOthers = (double)tiedTeams.get(1).confWins / ((double)tiedTeams.get(1).confWins + (double)tiedTeams.get(1).confLosses);
+
+        if(!(tiedTeams.get(0).tempWinPctAgainstOthers == tiedTeams.get(1).tempWinPctAgainstOthers)) {
+            Collections.sort(tiedTeams, Comparator.comparingDouble(Team::getTempWinPctAgainstOthers).reversed());
+            return;
+        } else {
+            twoTeamTiebreakerDivStepFive(tiedTeams, allTeams);
+        }
+    }
+
+    //2 team div tb Step 5: strength of victory
+    public static void twoTeamTiebreakerDivStepFive(List<Team> tiedTeams, ArrayList<Team> allTeams) {
+        for(Team t : tiedTeams) {
+            double wins = 0.0;
+            double totalGames = 0.0;
+            ArrayList<Team> teamsCovered = new ArrayList<Team>();
+            for(Team beatenTeam : t.teamsBeaten) {
+                if(!teamsCovered.contains(beatenTeam)) {
+                    wins += beatenTeam.wins;
+                    totalGames += (beatenTeam.wins + beatenTeam.losses);
+                    teamsCovered.add(beatenTeam);
+                }
+            }
+            t.tempWinPctAgainstOthers = wins / totalGames;
+        }
+
+        if(!(tiedTeams.get(0).tempWinPctAgainstOthers == tiedTeams.get(1).tempWinPctAgainstOthers)) {
+            Collections.sort(tiedTeams, Comparator.comparingDouble(Team::getTempWinPctAgainstOthers).reversed());
+            return;
+        } else {
+            twoTeamTiebreakerDivStepSix(tiedTeams, allTeams);
+        }
+    }
+
+    //2 team div tb Step 6: Strength of schedule
+    public static void twoTeamTiebreakerDivStepSix(List<Team> tiedTeams, ArrayList<Team> allTeams) {
+        for(Team t : tiedTeams) {
+            double wins = 0.0;
+            double totalGames = 0.0;
+            ArrayList<Team> teamsCovered = new ArrayList<Team>();
+            for(Team teamPlayed : t.teamsPlayed) {
+                if(!teamsCovered.contains(teamPlayed)) {
+                    wins += teamPlayed.wins;
+                    totalGames += (teamPlayed.wins + teamPlayed.losses);
+                    teamsCovered.add(teamPlayed);
+                }
+            }
+            t.tempWinPctAgainstOthers = wins / totalGames;
+        }
+
+        if(!(tiedTeams.get(0).tempWinPctAgainstOthers == tiedTeams.get(1).tempWinPctAgainstOthers)) {
+            Collections.sort(tiedTeams, Comparator.comparingDouble(Team::getTempWinPctAgainstOthers).reversed());
+            return;
+        } else {
+            twoTeamTiebreakerDivStepSeven(tiedTeams, allTeams);
+        }
+    }
+
+    //2-team div tb Step 7: PS, PA combined conference score
+    public static void twoTeamTiebreakerDivStepSeven(List<Team> tiedTeams, ArrayList<Team> allTeams) {
+        ArrayList<Team> conferenceTeams = new ArrayList<Team>();
+
+        for (Team t : allTeams) {
+            if (t.conference.equals(tiedTeams.get(0).conference)) {
+                conferenceTeams.add(t);
+            }
+        }
+
+        Collections.sort(conferenceTeams, Comparator.comparingInt(Team::getPointsScored).reversed());
+        for(Team t : tiedTeams) {
+            t.TBPSRank = conferenceTeams.indexOf(t);
+        }
+
+        Collections.sort(conferenceTeams, Comparator.comparingInt(Team::getPointsAllowed).reversed());
+        for(Team t : tiedTeams) {
+            t.TBPARank = conferenceTeams.indexOf(t);
+        }
+
+        for(Team t : tiedTeams) {
+            t.paPluspsNumber = t.TBPARank + t.TBPSRank;
+        }
+
+
+        if(tiedTeams.get(0).paPluspsNumber != tiedTeams.get(1).paPluspsNumber) {
+            Collections.sort(tiedTeams, Comparator.comparingInt(Team::getPaPlusPsNumber));
+            return;
+        } else {
+            twoTeamTiebreakerDivStepEight(tiedTeams, allTeams);
+        }
+    }
+
+    public static void twoTeamTiebreakerDivStepEight(List<Team> tiedTeams, ArrayList<Team> allTeams) {
+        Collections.sort(allTeams, Comparator.comparingInt(Team::getPointsScored).reversed());
+        for(Team t : tiedTeams) {
+            t.TBPSRank = allTeams.indexOf(t);
+        }
+
+        Collections.sort(allTeams, Comparator.comparingInt(Team::getPointsAllowed).reversed());
+        for(Team t : tiedTeams) {
+            t.TBPARank = allTeams.indexOf(t);
+        }
+
+        for(Team t : tiedTeams) {
+            t.paPluspsNumber = t.TBPARank + t.TBPSRank;
+        }
+
+
+        if(tiedTeams.get(0).paPluspsNumber != tiedTeams.get(1).paPluspsNumber) {
+            Collections.sort(tiedTeams, Comparator.comparingInt(Team::getPaPlusPsNumber));
+            return;
+        } else {
+            twoTeamTiebreakerDivStepNine(tiedTeams, allTeams);
+        }
+    }
+
+    public static void twoTeamTiebreakerDivStepNine(List<Team> tiedTeams, ArrayList<Team> allTeams) {
+        //TODO: Finish this later. Tiebreakers won't get this far
     }
 
     public static void predictGame(Game e) {

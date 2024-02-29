@@ -27,7 +27,7 @@ public class Team {
     public double tempWinPctAgainstOthers;
 
     public static void main(String[] args) {
-
+        
     }
 
     public Team(String iName, String iConference, String iDivision) {
