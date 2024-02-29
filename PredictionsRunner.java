@@ -256,7 +256,7 @@ public class PredictionsRunner {
         }
     }
 
-    //Divison tb step 3: common games
+    //Multi Divison tb step 3: common games
     public static void multiTiebreakerDivStepThree(List<Team>tiedTeams, ArrayList<Team> allTeams) {
         
         //TODO: Comment this better
@@ -628,8 +628,63 @@ public class PredictionsRunner {
             twoTeamTiebreakerDivStepTwo(tiedTeams, allTeams);
         }
     }
-
+    
+    //Two team div tb step 2: division record
     public static void twoTeamTiebreakerDivStepTwo(List<Team> tiedTeams, ArrayList<Team> allTeams) {
+        tiedTeams.get(0).tempWinPctAgainstOthers = (double)tiedTeams.get(0).divWins / ((double)tiedTeams.get(0).divWins + (double)tiedTeams.get(0).divLosses);
+        tiedTeams.get(1).tempWinPctAgainstOthers = (double)tiedTeams.get(1).divWins / ((double)tiedTeams.get(1).divWins + (double)tiedTeams.get(1).divLosses);
+
+        if(!(tiedTeams.get(0).tempWinPctAgainstOthers == tiedTeams.get(1).tempWinPctAgainstOthers)) {
+            Collections.sort(tiedTeams, Comparator.comparingDouble(Team::getTempWinPctAgainstOthers).reversed());
+            return;
+        } else {
+            twoTeamTiebreakerDivStepThree(tiedTeams, allTeams);
+        }
+    }
+
+    //Two team div tb step 3: common games
+    public static void twoTeamTiebreakerDivStepThree(List<Team>tiedTeams, ArrayList<Team> allTeams) {
+        //TODO: Comment this better
+        ArrayList<ArrayList<Team>> listOfLists = new ArrayList<>();
+
+        // Populate listOfLists
+        for (Team t : tiedTeams) {
+            listOfLists.add(new ArrayList<>(t.teamsPlayed));
+        }
+
+        // Create a HashSet and add elements from listOfLists.get(0)
+        Set<ArrayList<Team>> commonSet = new HashSet<>();
+        commonSet.add(new ArrayList<>(listOfLists.get(0)));
+
+        for (ArrayList<Team> list : listOfLists) {
+            commonSet.retainAll(list);
+        }
+
+        // Convert Set to ArrayList
+        ArrayList<Team> commonTeams = new ArrayList<>();
+        for (ArrayList<Team> commonList : commonSet) {
+            commonTeams.addAll(commonList);
+        }
+
+        //Set tempWinPct to common games win %
+        for(Team t : tiedTeams) {
+            int teamsBeatenCtr = 0;
+            for(Team cTeam : commonTeams) {
+                if(t.teamsBeaten.contains(cTeam)) { teamsBeatenCtr++; }
+            }
+            t.tempWinPctAgainstOthers = (double)teamsBeatenCtr / commonTeams.size();
+        }
+
+        //Sort tiedTeams by win % against commons
+        if(tiedTeams.get(0).tempWinPctAgainstOthers != tiedTeams.get(1).tempWinPctAgainstOthers) {
+            Collections.sort(tiedTeams, Comparator.comparingDouble(Team::getTempWinPctAgainstOthers).reversed());
+            return;
+        } else {
+            twoTeamTiebreakerDivStepFour(tiedTeams, allTeams);
+        }
+    }
+
+    public static void twoTeamTiebreakerDivStepFour(List<Team> tiedTeams, ArrayList<Team> allTeams) {
         
     }
 
