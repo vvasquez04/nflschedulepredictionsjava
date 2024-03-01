@@ -128,6 +128,9 @@ public class PredictionsRunner {
     //Tiebreak division standings
     //TODO: Check win % because bye weeks (may have to rework this entire thing)
     public static Team[] divTB(Team[] divisionArr, ArrayList<Team> allTeams) {
+        //Create an ArrayList to be added to
+        ArrayList<Team> returnAR = new ArrayList<Team>();
+        
         //Create a map of each list of teams with the same number of wins
         Map<Integer, List<Team>> groupedTeams = Arrays.asList(divisionArr).stream()
                 .collect(Collectors.groupingBy(Team::getWins));
@@ -136,9 +139,19 @@ public class PredictionsRunner {
             Integer wins = entry.getKey();
             List<Team> teams = entry.getValue();
             breakTieDiv(wins, teams, allTeams);
+            for(Team t : teams) {
+                returnAR.add(t);
+            }
         }
 
-        return new Team[1];
+        Team[] returnArr = new Team[4];
+        returnArr = returnAR.toArray(returnArr);
+
+        for(Team t : returnArr) {
+            System.out.println(t.name + " has " + t.wins + " wins.");
+        }
+
+        return returnArr;
     }
 
     //Staging ground for splitting off into different TB scenarios: Division version
@@ -152,6 +165,7 @@ public class PredictionsRunner {
     //NOTE: This doesn't work for 4-team ties. Must investigate
     public static void multiTiebreakerDivStepOne(List<Team> tiedTeams, ArrayList<Team> allTeams) {
         
+        System.out.println("Div m step 1 with " + tiedTeams.size() + " teams");
         //Loop through each tied team and determine its winning percentage against the other teams (if no games, 0.0)
         for(Team t : tiedTeams) {
             double recordAgainstOthers = 0.0;
@@ -170,9 +184,12 @@ public class PredictionsRunner {
             t.tempWinPctAgainstOthers = recordAgainstOthers;
         }
 
+        for(Team t : tiedTeams) {
+            System.out.println(t.tempWinPctAgainstOthers);
+        }
+
         //Sort the tied teams, best record first
         Collections.sort(tiedTeams, Comparator.comparingDouble(Team::getTempWinPctAgainstOthers).reversed());
-
         for(Team t : tiedTeams) {
             // System.out.println(t.name + " winning pct vs div opponents already played & tied with: " + t.tempWinPctAgainstOthers);
         }
@@ -197,24 +214,32 @@ public class PredictionsRunner {
                     break; // Exit the loop once the first non-tied element is found
                 }
             }
+            System.out.println("breakIndex: " + breakIndex);
 
             //Separate into sublists of teams that passed step 1 and didn't
             List<Team> stillTiedTeams = tiedTeams.subList(0, breakIndex);
             List<Team> restOfTeams = tiedTeams.subList(breakIndex, tiedTeams.size());
-            
+
+            System.out.println("stillTiedTeams size: " + stillTiedTeams.size() + "   and restOfTeams size: " + restOfTeams.size());
+
             //Call step 2 on those still tied, step 1 on the rest
             if(stillTiedTeams.size() > 2) {
-                multiTiebreakerDivStepFour(stillTiedTeams, allTeams);
+                multiTiebreakerDivStepTwo(stillTiedTeams, allTeams);
             } else {
                 twoTeamTiebreakerDivStepOne(stillTiedTeams, allTeams);
-            }            
-            breakTieDiv(tiedTeams.get(0).wins, restOfTeams, allTeams);
+            }      
+            System.out.println("Got past if stmt");     
+            if(restOfTeams.size() == tiedTeams.size()) {
+                multiTiebreakerDivStepTwo(restOfTeams, allTeams);
+            } else {
+                breakTieDiv(tiedTeams.get(0).wins, restOfTeams, allTeams);
+            }
         }
     }
 
     //Division tb step 2: division records
     public static void multiTiebreakerDivStepTwo(List<Team> tiedTeams, ArrayList<Team> allTeams) {
-        
+        System.out.println("Div m step 2");
         //Set temp win pct to divison win %
         for(Team t : tiedTeams) {
             t.tempWinPctAgainstOthers = (double)t.divWins / (double)(t.divWins + t.divLosses);
@@ -248,7 +273,7 @@ public class PredictionsRunner {
             
             //Call step 3 on those still tied, step 1 on the rest
             if(stillTiedTeams.size() > 2) {
-                multiTiebreakerDivStepFour(stillTiedTeams, allTeams);
+                multiTiebreakerDivStepThree(stillTiedTeams, allTeams);
             } else {
                 twoTeamTiebreakerDivStepOne(stillTiedTeams, allTeams);
             }            
@@ -258,7 +283,7 @@ public class PredictionsRunner {
 
     //Multi Divison tb step 3: common games
     public static void multiTiebreakerDivStepThree(List<Team>tiedTeams, ArrayList<Team> allTeams) {
-        
+        System.out.println("Div m step 3");
         //TODO: Comment this better
         ArrayList<ArrayList<Team>> listOfLists = new ArrayList<>();
 
@@ -328,7 +353,7 @@ public class PredictionsRunner {
 
     //Div step 4: conference win %
     public static void multiTiebreakerDivStepFour(List<Team> tiedTeams, ArrayList<Team> allTeams) {
-
+        System.out.println("Div m step 4");
         //Set temp win pct to conference win %
         for(Team t : tiedTeams) {
             t.tempWinPctAgainstOthers = (double)t.confWins / (double)(t.confWins + t.confLosses);
@@ -372,6 +397,8 @@ public class PredictionsRunner {
 
     //Div multi tb step 5: strength of victory
     public static void multiTiebreakerDivStepFive(List<Team> tiedTeams, ArrayList<Team> allTeams) {
+        System.out.println("Div m step 5");
+        
         for(Team t : tiedTeams) {
             double wins = 0.0;
             double totalGames = 0.0;
@@ -424,6 +451,8 @@ public class PredictionsRunner {
 
     //Div multi step 6: strength of schedule
     public static void multiTiebreakerDivStepSix(List<Team> tiedTeams, ArrayList<Team> allTeams) {
+        System.out.println("Div m step 6");
+        
         for(Team t : tiedTeams) {
             double wins = 0.0;
             double totalGames = 0.0;
@@ -476,7 +505,8 @@ public class PredictionsRunner {
 
     //Div multi tb step 7: combined ranking of PS and PA in conference
     public static void multiTiebreakerDivStepSeven(List<Team> tiedTeams, ArrayList<Team> allTeams) {
-        
+        System.out.println("Div m step 7");
+
         ArrayList<Team> conferenceTeams = new ArrayList<Team>();
 
         for (Team t : allTeams) {
@@ -536,6 +566,8 @@ public class PredictionsRunner {
 
     //Div tb step 8: combined ranking of PS and PA
     public static void multiTiebreakerDivStepEight(List<Team> tiedTeams, ArrayList<Team> allTeams) {
+        System.out.println("Div m step 8");
+
 
         Collections.sort(allTeams, Comparator.comparingInt(Team::getPointsScored).reversed());
         for(Team t : tiedTeams) {
@@ -589,11 +621,19 @@ public class PredictionsRunner {
     //Multi Div tb step 9: net points in common games
     public static void multiTiebreakerDivStepNine(List<Team> tiedTeams, ArrayList<Team> allTeams) {
         //Finish this later, no tb is gonna go 9 steps lmao
+        System.out.println("Div m step 9");
     }
 
     //Two team div tb step 1: head to head
     public static void twoTeamTiebreakerDivStepOne(List<Team> tiedTeams, ArrayList<Team> allTeams) {
-        if(tiedTeams.size() == 1) { return; }
+        if(tiedTeams.size() < 2) { return; }
+        System.out.println("Div t step 1");
+        for(Team t : tiedTeams){
+            System.out.print(t.name + " ");
+        }
+        System.out.println();
+        
+        if(tiedTeams.size() == 1 || tiedTeams.size() == 0) { return; }
 
         for(Team t : tiedTeams) {
             double recordAgainstOthers = 0.0;
@@ -631,6 +671,8 @@ public class PredictionsRunner {
     
     //Two team div tb step 2: division record
     public static void twoTeamTiebreakerDivStepTwo(List<Team> tiedTeams, ArrayList<Team> allTeams) {
+        System.out.println("Div t step 2");
+        
         tiedTeams.get(0).tempWinPctAgainstOthers = (double)tiedTeams.get(0).divWins / ((double)tiedTeams.get(0).divWins + (double)tiedTeams.get(0).divLosses);
         tiedTeams.get(1).tempWinPctAgainstOthers = (double)tiedTeams.get(1).divWins / ((double)tiedTeams.get(1).divWins + (double)tiedTeams.get(1).divLosses);
 
@@ -644,6 +686,8 @@ public class PredictionsRunner {
 
     //Two team div tb step 3: common games
     public static void twoTeamTiebreakerDivStepThree(List<Team>tiedTeams, ArrayList<Team> allTeams) {
+        System.out.println("Div t step 3");
+        
         //TODO: Comment this better
         ArrayList<ArrayList<Team>> listOfLists = new ArrayList<>();
 
@@ -686,6 +730,8 @@ public class PredictionsRunner {
 
     //2 team div tb Step 4: conference games
     public static void twoTeamTiebreakerDivStepFour(List<Team> tiedTeams, ArrayList<Team> allTeams) {
+        System.out.println("Div t step 4");
+        
         tiedTeams.get(0).tempWinPctAgainstOthers = (double)tiedTeams.get(0).confWins / ((double)tiedTeams.get(0).confWins + (double)tiedTeams.get(0).confLosses);
         tiedTeams.get(1).tempWinPctAgainstOthers = (double)tiedTeams.get(1).confWins / ((double)tiedTeams.get(1).confWins + (double)tiedTeams.get(1).confLosses);
 
@@ -699,6 +745,8 @@ public class PredictionsRunner {
 
     //2 team div tb Step 5: strength of victory
     public static void twoTeamTiebreakerDivStepFive(List<Team> tiedTeams, ArrayList<Team> allTeams) {
+        System.out.println("Div t step 5");
+        
         for(Team t : tiedTeams) {
             double wins = 0.0;
             double totalGames = 0.0;
@@ -723,6 +771,8 @@ public class PredictionsRunner {
 
     //2 team div tb Step 6: Strength of schedule
     public static void twoTeamTiebreakerDivStepSix(List<Team> tiedTeams, ArrayList<Team> allTeams) {
+        System.out.println("Div t step 6");
+        
         for(Team t : tiedTeams) {
             double wins = 0.0;
             double totalGames = 0.0;
@@ -747,6 +797,8 @@ public class PredictionsRunner {
 
     //2-team div tb Step 7: PS, PA combined conference score
     public static void twoTeamTiebreakerDivStepSeven(List<Team> tiedTeams, ArrayList<Team> allTeams) {
+        System.out.println("Div t step 7");
+        
         ArrayList<Team> conferenceTeams = new ArrayList<Team>();
 
         for (Team t : allTeams) {
@@ -779,6 +831,8 @@ public class PredictionsRunner {
     }
 
     public static void twoTeamTiebreakerDivStepEight(List<Team> tiedTeams, ArrayList<Team> allTeams) {
+        System.out.println("Div t step 8");
+        
         Collections.sort(allTeams, Comparator.comparingInt(Team::getPointsScored).reversed());
         for(Team t : tiedTeams) {
             t.TBPSRank = allTeams.indexOf(t);
@@ -803,6 +857,7 @@ public class PredictionsRunner {
     }
 
     public static void twoTeamTiebreakerDivStepNine(List<Team> tiedTeams, ArrayList<Team> allTeams) {
+        System.out.println("Div t step 9");
         //TODO: Finish this later. Tiebreakers won't get this far
     }
 
