@@ -26,7 +26,7 @@ Los Angeles Chargers,AFC,West
 Kansas City Chiefs,AFC,West
 Las Vegas Raiders,AFC,West
 Denver Broncos,AFC,West
-Jacksonville Jaguars,AFC,West
-Tennessee Titans,AFC,West
-Houston Texans,AFC,West
-Indianapolis Colts,AFC,West
+Jacksonville Jaguars,AFC,South
+Tennessee Titans,AFC,South
+Houston Texans,AFC,South
+Indianapolis Colts,AFC,South
