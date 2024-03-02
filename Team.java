@@ -65,6 +65,10 @@ public class Team {
         return this.wins;
     }
 
+    public int getLosses() {
+        return this.losses;
+    }
+
     public int getPointsScored() {
         return this.pointsScored;
     }

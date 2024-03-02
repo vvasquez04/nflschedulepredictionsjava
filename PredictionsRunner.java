@@ -123,7 +123,13 @@ public class PredictionsRunner {
         Team[] tiebrokenNfcNorth = divTB(rawNfcNorthArr, allTeams);
         Team[] tiebrokenNfcWest = divTB(rawNfcWestArr, allTeams);
         Team[] tiebrokenNfcSouth = divTB(rawNfcSouthArr, allTeams);
+    
+        //Tiebreak conferences, put results into new arrays
+        // Team[] tiebrokenAFC = confTB(rawAfcTeamsArr, allTeams);
+        // Team[] tiebrokenNFC = confTB(rawNfcTeamsArr, allTeams);
     }
+
+    
 
     //Tiebreak division standings
     //TODO: Check win % because bye weeks (may have to rework this entire thing)
@@ -132,17 +138,24 @@ public class PredictionsRunner {
         ArrayList<Team> returnAR = new ArrayList<Team>();
         
         //Create a map of each list of teams with the same number of wins
-        Map<Integer, List<Team>> groupedTeams = Arrays.asList(divisionArr).stream()
-                .collect(Collectors.groupingBy(Team::getWins));
+        Map<Integer, Map<Integer, List<Team>>> groupedTeams = Arrays.asList(divisionArr).stream()
+            .collect(Collectors.groupingBy(Team::getWins, 
+                        Collectors.groupingBy(Team::getLosses)));
 
-        for (Map.Entry<Integer, List<Team>> entry : groupedTeams.entrySet()) {
-            Integer wins = entry.getKey();
-            List<Team> teams = entry.getValue();
-            // for(Team t : teams) { System.out.println("before breaktiediv " + t.name); }
-            breakTieDiv(wins, teams, allTeams);
-            for(Team t : teams) {
-                returnAR.add(t);
-                System.out.println("Adding " + t.name + " to returnAR");
+        for (Map.Entry<Integer, Map<Integer, List<Team>>> winsEntry : groupedTeams.entrySet()) {
+            Integer wins = winsEntry.getKey();
+            Map<Integer, List<Team>> lossesMap = winsEntry.getValue();
+
+            for (Map.Entry<Integer, List<Team>> lossesEntry : lossesMap.entrySet()) {
+                Integer losses = lossesEntry.getKey();
+                List<Team> teams = lossesEntry.getValue();
+
+                breakTieDiv(wins, losses, teams, allTeams);
+
+                for (Team t : teams) {
+                    returnAR.add(t);
+                    System.out.println("Adding " + t.name + " to returnAR");
+                }
             }
         }
 
@@ -158,7 +171,7 @@ public class PredictionsRunner {
     }
 
     //Staging ground for splitting off into different TB scenarios: Division version
-    public static void breakTieDiv(Integer wins, List<Team> tiedTeams, ArrayList<Team> allTeams) {
+    public static void breakTieDiv(Integer wins, Integer losses, List<Team> tiedTeams, ArrayList<Team> allTeams) {
         if(tiedTeams.size() > 2) {
             multiTiebreakerDivStepOne(tiedTeams, allTeams);
         } else if(tiedTeams.size() == 2) { 
@@ -208,7 +221,7 @@ public class PredictionsRunner {
             // System.out.println();
             // for(Team t : restOfTeams) { System.out.print(t.name + " "); }
             // System.out.println();
-            breakTieDiv(tiedTeams.get(0).wins, restOfTeams, allTeams);
+            breakTieDiv(tiedTeams.get(0).wins, tiedTeams.get(0).losses, restOfTeams, allTeams);
         } else {
             int breakIndex = 0;
             boolean foundFirstNonTied = false;
@@ -237,7 +250,7 @@ public class PredictionsRunner {
             if(restOfTeams.size() == tiedTeams.size()) {
                 multiTiebreakerDivStepTwo(restOfTeams, allTeams);
             } else {
-                breakTieDiv(tiedTeams.get(0).wins, restOfTeams, allTeams);
+                breakTieDiv(tiedTeams.get(0).wins, tiedTeams.get(0).losses, restOfTeams, allTeams);
             }
         }
     }
@@ -260,7 +273,7 @@ public class PredictionsRunner {
             // System.out.println();
             // for(Team t : restOfTeams) { System.out.print(t.name + " "); }
             // System.out.println();
-            breakTieDiv(tiedTeams.get(0).wins, restOfTeams, allTeams);
+            breakTieDiv(tiedTeams.get(0).wins, tiedTeams.get(0).losses, restOfTeams, allTeams);
         } else {
             int breakIndex = 0;
             boolean foundFirstNonTied = false;
@@ -282,7 +295,7 @@ public class PredictionsRunner {
             } else {
                 twoTeamTiebreakerDivStepOne(stillTiedTeams, allTeams);
             }            
-            breakTieDiv(tiedTeams.get(0).wins, restOfTeams, allTeams);
+            breakTieDiv(tiedTeams.get(0).wins, tiedTeams.get(0).losses, restOfTeams, allTeams);
         }
     }
 
@@ -330,7 +343,7 @@ public class PredictionsRunner {
             // System.out.println();
             // for(Team t : restOfTeams) { System.out.print(t.name + " "); }
             // System.out.println();
-            breakTieDiv(tiedTeams.get(0).wins, restOfTeams, allTeams);
+            breakTieDiv(tiedTeams.get(0).wins, tiedTeams.get(0).losses, restOfTeams, allTeams);
         } else {
             int breakIndex = 0;
             boolean foundFirstNonTied = false;
@@ -352,7 +365,7 @@ public class PredictionsRunner {
             } else {
                 twoTeamTiebreakerDivStepOne(stillTiedTeams, allTeams);
             }
-            breakTieDiv(tiedTeams.get(0).wins, restOfTeams, allTeams);
+            breakTieDiv(tiedTeams.get(0).wins, tiedTeams.get(0).losses, restOfTeams, allTeams);
         }
     }
 
@@ -374,7 +387,7 @@ public class PredictionsRunner {
             // System.out.println();
             // for(Team t : restOfTeams) { System.out.print(t.name + " "); }
             // System.out.println();
-            breakTieDiv(tiedTeams.get(0).wins, restOfTeams, allTeams);
+            breakTieDiv(tiedTeams.get(0).wins, tiedTeams.get(0).losses, restOfTeams, allTeams);
         } else {
             int breakIndex = 0;
             boolean foundFirstNonTied = false;
@@ -396,7 +409,7 @@ public class PredictionsRunner {
             } else {
                 twoTeamTiebreakerDivStepOne(stillTiedTeams, allTeams);
             }            
-            breakTieDiv(tiedTeams.get(0).wins, restOfTeams, allTeams);
+            breakTieDiv(tiedTeams.get(0).wins, tiedTeams.get(0).losses, restOfTeams, allTeams);
         }
     }
 
@@ -428,7 +441,7 @@ public class PredictionsRunner {
             // System.out.println();
             // for(Team t : restOfTeams) { System.out.print(t.name + " "); }
             // System.out.println();
-            breakTieDiv(tiedTeams.get(0).wins, restOfTeams, allTeams);
+            breakTieDiv(tiedTeams.get(0).wins, tiedTeams.get(0).losses, restOfTeams, allTeams);
         } else {
             int breakIndex = 0;
             boolean foundFirstNonTied = false;
@@ -450,7 +463,7 @@ public class PredictionsRunner {
             } else {
                 twoTeamTiebreakerDivStepOne(stillTiedTeams, allTeams);
             }            
-            breakTieDiv(tiedTeams.get(0).wins, restOfTeams, allTeams);
+            breakTieDiv(tiedTeams.get(0).wins, tiedTeams.get(0).losses, restOfTeams, allTeams);
         }
     }
 
@@ -482,7 +495,7 @@ public class PredictionsRunner {
             // System.out.println();
             // for(Team t : restOfTeams) { System.out.print(t.name + " "); }
             // System.out.println();
-            breakTieDiv(tiedTeams.get(0).wins, restOfTeams, allTeams);
+            breakTieDiv(tiedTeams.get(0).wins, tiedTeams.get(0).losses, restOfTeams, allTeams);
         } else {
             int breakIndex = 0;
             boolean foundFirstNonTied = false;
@@ -504,7 +517,7 @@ public class PredictionsRunner {
             } else {
                 twoTeamTiebreakerDivStepOne(stillTiedTeams, allTeams);
             }            
-            breakTieDiv(tiedTeams.get(0).wins, restOfTeams, allTeams);
+            breakTieDiv(tiedTeams.get(0).wins, tiedTeams.get(0).losses, restOfTeams, allTeams);
         }
     }
 
@@ -543,7 +556,7 @@ public class PredictionsRunner {
             // System.out.println();
             // for(Team t : restOfTeams) { System.out.print(t.name + " "); }
             // System.out.println();
-            breakTieDiv(tiedTeams.get(0).wins, restOfTeams, allTeams);
+            breakTieDiv(tiedTeams.get(0).wins, tiedTeams.get(0).losses, restOfTeams, allTeams);
         } else {
             int breakIndex = 0;
             boolean foundFirstNonTied = false;
@@ -565,7 +578,7 @@ public class PredictionsRunner {
             } else {
                 twoTeamTiebreakerDivStepOne(stillTiedTeams, allTeams);
             }            
-            breakTieDiv(tiedTeams.get(0).wins, restOfTeams, allTeams);
+            breakTieDiv(tiedTeams.get(0).wins, tiedTeams.get(0).losses, restOfTeams, allTeams);
         }
     }
 
@@ -596,7 +609,7 @@ public class PredictionsRunner {
             // System.out.println();
             // for(Team t : restOfTeams) { System.out.print(t.name + " "); }
             // System.out.println();
-            breakTieDiv(tiedTeams.get(0).wins, restOfTeams, allTeams);
+            breakTieDiv(tiedTeams.get(0).wins, tiedTeams.get(0).losses, restOfTeams, allTeams);
         } else {
             int breakIndex = 0;
             boolean foundFirstNonTied = false;
@@ -618,7 +631,7 @@ public class PredictionsRunner {
             } else {
                 twoTeamTiebreakerDivStepOne(stillTiedTeams, allTeams);
             }            
-            breakTieDiv(tiedTeams.get(0).wins, restOfTeams, allTeams);
+            breakTieDiv(tiedTeams.get(0).wins, tiedTeams.get(0).losses, restOfTeams, allTeams);
         }
     }
 
