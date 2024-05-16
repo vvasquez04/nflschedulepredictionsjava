@@ -37,12 +37,15 @@ public class PredictionsRunner {
                     predictGame((Game)e);
                 }
             }
-            updateStandings(allTeams);
+            updateStandings(w, allTeams);
+            System.out.println("Week " + w.weekNumber + " complete! Type 'c' to continue or 'help' for a different command");
+            String userInput = StdIn.readString().trim();
+            weeklyMenu(userInput, season, allTeams, w.weekNumber);
         }
     }
 
     //Update standings upon request or at end of each regular season week
-    public static void updateStandings(ArrayList<Team> allTeams) {
+    public static void updateStandings(Week week, ArrayList<Team> allTeams) {
         //Instantiate arrayLists for conferences
         ArrayList<Team> afcTeams = new ArrayList<Team>();
         ArrayList<Team> nfcTeams = new ArrayList<Team>();
@@ -127,30 +130,91 @@ public class PredictionsRunner {
         //Tiebreak conferences, put results into new arrays
         Team[] tiebrokenAFC = confTB(rawAfcTeamsArr, allTeams);
         Team[] tiebrokenNFC = confTB(rawNfcTeamsArr, allTeams);
+
+        //Print out sorted standings at end of week
+        System.out.println("Week " + week.weekNumber + " Standings:");
+        System.out.println();
+        System.out.println("AFC East:");
+        for(int i = 0; i < tiebrokenAfcEast.length; i++) {
+            Team t = tiebrokenAfcEast[i];
+            System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+        }
+        System.out.println("AFC North:");
+        for(int i = 0; i < tiebrokenAfcNorth.length; i++) {
+            Team t = tiebrokenAfcEast[i];
+            System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+        }
+        System.out.println("AFC South:");
+        for(int i = 0; i < tiebrokenAfcSouth.length; i++) {
+            Team t = tiebrokenAfcEast[i];
+            System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+        }
+        System.out.println("AFC West:");
+        for(int i = 0; i < tiebrokenAfcWest.length; i++) {
+            Team t = tiebrokenAfcEast[i];
+            System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+        }
+        System.out.println("NFC East:");
+        for(int i = 0; i < tiebrokenNfcEast.length; i++) {
+            Team t = tiebrokenAfcEast[i];
+            System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+        }
+        System.out.println("NFC North:");
+        for(int i = 0; i < tiebrokenNfcNorth.length; i++) {
+            Team t = tiebrokenAfcEast[i];
+            System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+        }
+        System.out.println("NFC South:");
+        for(int i = 0; i < tiebrokenNfcSouth.length; i++) {
+            Team t = tiebrokenAfcEast[i];
+            System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+        }
+        System.out.println("NFC West:");
+        for(int i = 0; i < tiebrokenNfcWest.length; i++) {
+            Team t = tiebrokenAfcEast[i];
+            System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+        }
+        System.out.println("AFC");
+        for(int i = 0; i < tiebrokenAFC.length; i++) {
+            Team t = tiebrokenAfcEast[i];
+            System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+        }
+        System.out.println("NFC");
+        for(int i = 0; i < tiebrokenNFC.length; i++) {
+            Team t = tiebrokenAfcEast[i];
+            System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+        }
     }
 
     //Tiebreak conference standings
     public static Team[] confTB(Team[] confArr, ArrayList<Team> allTeams) {
+        //Create an ArrayList to be added to
         ArrayList<Team> returnAR = new ArrayList<Team>();
-        
-        //Create a map of each list of teams with the same number of wins
-        Map<Integer, Map<Integer, List<Team>>> groupedTeams = Arrays.asList(confArr).stream()
-            .collect(Collectors.groupingBy(Team::getWins, 
-                        Collectors.groupingBy(Team::getLosses)));
 
-        for (Map.Entry<Integer, Map<Integer, List<Team>>> winsEntry : groupedTeams.entrySet()) {
+        // Create a map of each list of teams with the same number of wins
+        Map<Integer, Map<Integer, Map<Integer, List<Team>>>> groupedTeams = Arrays.asList(confArr).stream()
+            .collect(Collectors.groupingBy(Team::getWins,
+                        Collectors.groupingBy(Team::getLosses,
+                                Collectors.groupingBy(Team::getTies))));
+
+        for (Map.Entry<Integer, Map<Integer, Map<Integer, List<Team>>>> winsEntry : groupedTeams.entrySet()) {
             Integer wins = winsEntry.getKey();
-            Map<Integer, List<Team>> lossesMap = winsEntry.getValue();
+            Map<Integer, Map<Integer, List<Team>>> lossesMap = winsEntry.getValue();
 
-            for (Map.Entry<Integer, List<Team>> lossesEntry : lossesMap.entrySet()) {
+            for (Map.Entry<Integer, Map<Integer, List<Team>>> lossesEntry : lossesMap.entrySet()) {
                 Integer losses = lossesEntry.getKey();
-                List<Team> teams = lossesEntry.getValue();
+                Map<Integer, List<Team>> tiesMap = lossesEntry.getValue();
 
-                breakTieConf(wins, losses, teams, allTeams);
+                for (Map.Entry<Integer, List<Team>> tiesEntry : tiesMap.entrySet()) {
+                    Integer ties = tiesEntry.getKey();
+                    List<Team> teams = tiesEntry.getValue();
 
-                for (Team t : teams) {
-                    returnAR.add(t);
-                    System.out.println("Adding " + t.name + " to returnAR");
+                    breakTieConf(wins, losses, ties, teams, allTeams);
+
+                    for (Team t : teams) {
+                        returnAR.add(t);
+                        //System.out.println("Adding " + t.name + " to returnAR");
+                    }
                 }
             }
         }
@@ -160,13 +224,13 @@ public class PredictionsRunner {
         returnArr = returnAR.toArray(returnArr);
 
         for(Team t : returnArr) {
-            System.out.println(t.name + " has " + t.wins + " wins.");
+            //System.out.println(t.name + " has " + t.wins + " wins, " + t.losses + " losses, and " + t.ties + " ties.");
         }
 
         return returnArr;
     }
 
-    public static void breakTieConf(Integer wins, Integer losses, List<Team> tiedTeams, ArrayList<Team> allTeams) {
+    public static void breakTieConf(Integer wins, Integer losses, Integer Ties, List<Team> tiedTeams, ArrayList<Team> allTeams) {
         if(tiedTeams.size() > 2) {
             multiTiebreakerConfStepOne(tiedTeams, allTeams);
         } else if(tiedTeams.size() == 2) { 
@@ -174,8 +238,9 @@ public class PredictionsRunner {
         }
     }
 
+    //Conference tb step 1: eliminate same-division teams
     public static void multiTiebreakerConfStepOne(List<Team> tiedTeams, ArrayList<Team> allTeams) {
-
+        
     }
 
     //Two team conf tb Step 1: 
@@ -210,7 +275,7 @@ public class PredictionsRunner {
 
                     for (Team t : teams) {
                         returnAR.add(t);
-                        System.out.println("Adding " + t.name + " to returnAR");
+                        //System.out.println("Adding " + t.name + " to returnAR");
                     }
                 }
             }
@@ -1054,6 +1119,21 @@ public class PredictionsRunner {
         }
 
         return margin;
+    }
+
+    //In-Regular Season Menu
+    public static void weeklyMenu(String userInput, Season season, ArrayList<Team> allTeams, int weekNumber) {
+        switch(userInput.trim().toLowerCase()) {
+            case ("c"):
+                System.out.println("Continuing to Week " + weekNumber);
+            case ("help"):
+
+            case ("standings"):
+
+            case ("schedule"):
+
+            case ("results"):
+        }
     }
 
     //Consider this the "start menu" when 'start' is first inputted
