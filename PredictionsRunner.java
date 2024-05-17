@@ -39,6 +39,8 @@ public class PredictionsRunner {
             }
             updateStandings(season, w, allTeams);
         }
+
+
     }
 
     //Update standings upon request or at end of each regular season week
@@ -1148,9 +1150,11 @@ public class PredictionsRunner {
 
     //Print Standings for Specific Division
     public static void printStandingsDiv(Season season, ArrayList<Team> allTeams, int weekNumber, Team[] tiebrokenAfcEast, Team[] tiebrokenAfcNorth, Team[] tiebrokenAfcSouth, Team[] tiebrokenAfcWest, Team[] tiebrokenNfcEast, Team[] tiebrokenNfcNorth, Team[] tiebrokenNfcSouth, Team[] tiebrokenNfcWest) {
+        //Get user input for division
         System.out.println("Which Division?");
         String userInput = StdIn.readString().trim().toLowerCase();
 
+        //Print division standings based on user input
         switch(userInput) {
             case ("afc east"):
                 System.out.println("Week " + weekNumber + " AFC East Standings:");
@@ -1208,13 +1212,19 @@ public class PredictionsRunner {
                     Team t = tiebrokenNfcWest[i];
                     System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
                 }
+            //Error catching
+            default:
+                System.out.println("Invalid division name! Try again");
+                printStandingsDiv(season, allTeams, weekNumber, tiebrokenAfcEast, tiebrokenAfcNorth, tiebrokenAfcSouth, tiebrokenAfcWest, tiebrokenNfcEast, tiebrokenNfcNorth, tiebrokenNfcSouth, tiebrokenNfcWest);
         }
     }
 
     public static void printStandingsConf(Season season, ArrayList<Team> allTeams, int weekNumber, Team[] tiebrokenAFC, Team[] tiebrokenNFC) {
-        System.out.println("Which Division?");
+        //Get user input for conference
+        System.out.println("Which Conference?");
         String userInput = StdIn.readString().trim().toLowerCase();
 
+        //Print conference standings based on user input
         switch(userInput) {
             case ("afc"):
                 System.out.println("Week " + weekNumber + " AFC Standings:");
@@ -1230,6 +1240,10 @@ public class PredictionsRunner {
                     Team t = tiebrokenNFC[i];
                     System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
                 }
+            //Error catching
+            default:
+                System.out.println("Invalid conference name! Try again");
+                printStandingsConf(season, allTeams, weekNumber, tiebrokenAFC, tiebrokenNFC);
         }
     }
 
