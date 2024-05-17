@@ -37,15 +37,12 @@ public class PredictionsRunner {
                     predictGame((Game)e);
                 }
             }
-            updateStandings(w, allTeams);
-            System.out.println("Week " + w.weekNumber + " complete! Type 'c' to continue or 'help' for a different command");
-            String userInput = StdIn.readString().trim();
-            weeklyMenu(userInput, season, allTeams, w.weekNumber);
+            updateStandings(season, w, allTeams);
         }
     }
 
     //Update standings upon request or at end of each regular season week
-    public static void updateStandings(Week week, ArrayList<Team> allTeams) {
+    public static void updateStandings(Season season, Week week, ArrayList<Team> allTeams) {
         //Instantiate arrayLists for conferences
         ArrayList<Team> afcTeams = new ArrayList<Team>();
         ArrayList<Team> nfcTeams = new ArrayList<Team>();
@@ -131,59 +128,8 @@ public class PredictionsRunner {
         Team[] tiebrokenAFC = confTB(rawAfcTeamsArr, allTeams);
         Team[] tiebrokenNFC = confTB(rawNfcTeamsArr, allTeams);
 
-        //Print out sorted standings at end of week
-        System.out.println("Week " + week.weekNumber + " Standings:");
-        System.out.println();
-        System.out.println("AFC East:");
-        for(int i = 0; i < tiebrokenAfcEast.length; i++) {
-            Team t = tiebrokenAfcEast[i];
-            System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
-        }
-        System.out.println("AFC North:");
-        for(int i = 0; i < tiebrokenAfcNorth.length; i++) {
-            Team t = tiebrokenAfcEast[i];
-            System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
-        }
-        System.out.println("AFC South:");
-        for(int i = 0; i < tiebrokenAfcSouth.length; i++) {
-            Team t = tiebrokenAfcEast[i];
-            System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
-        }
-        System.out.println("AFC West:");
-        for(int i = 0; i < tiebrokenAfcWest.length; i++) {
-            Team t = tiebrokenAfcEast[i];
-            System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
-        }
-        System.out.println("NFC East:");
-        for(int i = 0; i < tiebrokenNfcEast.length; i++) {
-            Team t = tiebrokenAfcEast[i];
-            System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
-        }
-        System.out.println("NFC North:");
-        for(int i = 0; i < tiebrokenNfcNorth.length; i++) {
-            Team t = tiebrokenAfcEast[i];
-            System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
-        }
-        System.out.println("NFC South:");
-        for(int i = 0; i < tiebrokenNfcSouth.length; i++) {
-            Team t = tiebrokenAfcEast[i];
-            System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
-        }
-        System.out.println("NFC West:");
-        for(int i = 0; i < tiebrokenNfcWest.length; i++) {
-            Team t = tiebrokenAfcEast[i];
-            System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
-        }
-        System.out.println("AFC");
-        for(int i = 0; i < tiebrokenAFC.length; i++) {
-            Team t = tiebrokenAfcEast[i];
-            System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
-        }
-        System.out.println("NFC");
-        for(int i = 0; i < tiebrokenNFC.length; i++) {
-            Team t = tiebrokenAfcEast[i];
-            System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
-        }
+        //End of Week Menu
+        weeklyMenu(season, allTeams, week.weekNumber, tiebrokenAfcEast, tiebrokenAfcNorth, tiebrokenAfcSouth, tiebrokenAfcWest, tiebrokenNfcEast, tiebrokenNfcNorth, tiebrokenNfcSouth, tiebrokenNfcWest, tiebrokenAFC, tiebrokenNFC);
     }
 
     //Tiebreak conference standings
@@ -1120,19 +1066,252 @@ public class PredictionsRunner {
 
         return margin;
     }
+    
+    //Print Standings for Specific Division
+    public static void printStandingsDiv(Season season, ArrayList<Team> allTeams, int weekNumber, Team[] tiebrokenAfcEast, Team[] tiebrokenAfcNorth, Team[] tiebrokenAfcSouth, Team[] tiebrokenAfcWest, Team[] tiebrokenNfcEast, Team[] tiebrokenNfcNorth, Team[] tiebrokenNfcSouth, Team[] tiebrokenNfcWest, Team[] tiebrokenAFC, Team[] tiebrokenNFC) {
+        System.out.println("Which Division?");
+        String userInput = StdIn.readString().trim().toLowerCase();
+
+        switch(userInput) {
+            case ("afc east"):
+                System.out.println("Week " + weekNumber + " AFC East Standings:");
+                System.out.println();
+                for(int i = 0; i < tiebrokenAfcEast.length; i++) {
+                    Team t = tiebrokenAfcEast[i];
+                    System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+                }
+            case ("afc north"):
+                System.out.println("Week " + weekNumber + " AFC North Standings:");
+                System.out.println();
+                for(int i = 0; i < tiebrokenAfcNorth.length; i++) {
+                    Team t = tiebrokenAfcEast[i];
+                    System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+                }
+            case ("afc south"):
+                System.out.println("Week " + weekNumber + " AFC South Standings:");
+                System.out.println();
+                for(int i = 0; i < tiebrokenAfcSouth.length; i++) {
+                    Team t = tiebrokenAfcEast[i];
+                    System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+                }
+            case ("afc west"):
+                System.out.println("Week " + weekNumber + " AFC West Standings:");
+                System.out.println();
+                for(int i = 0; i < tiebrokenAfcWest.length; i++) {
+                    Team t = tiebrokenAfcEast[i];
+                    System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+                }
+            case ("nfc east"):
+                System.out.println("Week " + weekNumber + " NFC East Standings:");
+                System.out.println();
+                for(int i = 0; i < tiebrokenNfcEast.length; i++) {
+                    Team t = tiebrokenAfcEast[i];
+                    System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+                }
+            case ("nfc north"):
+                System.out.println("Week " + weekNumber + " NFC North Standings:");
+                System.out.println();
+                for(int i = 0; i < tiebrokenNfcNorth.length; i++) {
+                    Team t = tiebrokenAfcEast[i];
+                    System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+                }
+            case ("nfc south"):
+                System.out.println("Week " + weekNumber + " NFC South Standings:");
+                System.out.println();
+                for(int i = 0; i < tiebrokenNfcSouth.length; i++) {
+                    Team t = tiebrokenAfcEast[i];
+                    System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+                }
+            case ("nfc west"):
+                System.out.println("Week " + weekNumber + " NFC West Standings:");
+                System.out.println();
+                for(int i = 0; i < tiebrokenNfcWest.length; i++) {
+                    Team t = tiebrokenAfcEast[i];
+                    System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+                }
+            default:
+                System.out.println("Invalid input, try again.");
+                printStandingsDiv(season, allTeams, weekNumber, tiebrokenAfcEast, tiebrokenAfcNorth, tiebrokenAfcSouth, tiebrokenAfcWest, tiebrokenNfcEast, tiebrokenNfcNorth, tiebrokenNfcSouth, tiebrokenNfcWest, tiebrokenAFC, tiebrokenNFC);
+        }
+        
+        System.out.println("AFC");
+        for(int i = 0; i < tiebrokenAFC.length; i++) {
+            Team t = tiebrokenAfcEast[i];
+            System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+        }
+        System.out.println("NFC");
+        for(int i = 0; i < tiebrokenNFC.length; i++) {
+            Team t = tiebrokenAfcEast[i];
+            System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+        }
+    }
+
+    //Print Standings for Specific Division
+    public static void printStandingsDiv(Season season, ArrayList<Team> allTeams, int weekNumber, Team[] tiebrokenAfcEast, Team[] tiebrokenAfcNorth, Team[] tiebrokenAfcSouth, Team[] tiebrokenAfcWest, Team[] tiebrokenNfcEast, Team[] tiebrokenNfcNorth, Team[] tiebrokenNfcSouth, Team[] tiebrokenNfcWest) {
+        System.out.println("Which Division?");
+        String userInput = StdIn.readString().trim().toLowerCase();
+
+        switch(userInput) {
+            case ("afc east"):
+                System.out.println("Week " + weekNumber + " AFC East Standings:");
+                System.out.println();
+                for(int i = 0; i < tiebrokenAfcEast.length; i++) {
+                    Team t = tiebrokenAfcEast[i];
+                    System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+                }
+            case ("afc north"):
+                System.out.println("Week " + weekNumber + " AFC North Standings:");
+                System.out.println();
+                for(int i = 0; i < tiebrokenAfcNorth.length; i++) {
+                    Team t = tiebrokenAfcNorth[i];
+                    System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+                }
+            case ("afc south"):
+                System.out.println("Week " + weekNumber + " AFC South Standings:");
+                System.out.println();
+                for(int i = 0; i < tiebrokenAfcSouth.length; i++) {
+                    Team t = tiebrokenAfcSouth[i];
+                    System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+                }
+            case ("afc west"):
+                System.out.println("Week " + weekNumber + " AFC West Standings:");
+                System.out.println();
+                for(int i = 0; i < tiebrokenAfcWest.length; i++) {
+                    Team t = tiebrokenAfcWest[i];
+                    System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+                }
+            case ("nfc east"):
+                System.out.println("Week " + weekNumber + " NFC East Standings:");
+                System.out.println();
+                for(int i = 0; i < tiebrokenNfcEast.length; i++) {
+                    Team t = tiebrokenNfcEast[i];
+                    System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+                }
+            case ("nfc north"):
+                System.out.println("Week " + weekNumber + " NFC North Standings:");
+                System.out.println();
+                for(int i = 0; i < tiebrokenNfcNorth.length; i++) {
+                    Team t = tiebrokenNfcNorth[i];
+                    System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+                }
+            case ("nfc south"):
+                System.out.println("Week " + weekNumber + " NFC South Standings:");
+                System.out.println();
+                for(int i = 0; i < tiebrokenNfcSouth.length; i++) {
+                    Team t = tiebrokenNfcSouth[i];
+                    System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+                }
+            case ("nfc west"):
+                System.out.println("Week " + weekNumber + " NFC West Standings:");
+                System.out.println();
+                for(int i = 0; i < tiebrokenNfcWest.length; i++) {
+                    Team t = tiebrokenNfcWest[i];
+                    System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+                }
+        }
+    }
+
+    public static void printStandingsConf(Season season, ArrayList<Team> allTeams, int weekNumber, Team[] tiebrokenAFC, Team[] tiebrokenNFC) {
+        System.out.println("Which Division?");
+        String userInput = StdIn.readString().trim().toLowerCase();
+
+        switch(userInput) {
+            case ("afc"):
+                System.out.println("Week " + weekNumber + " AFC Standings:");
+                System.out.println();
+                for(int i = 0; i < tiebrokenAFC.length; i++) {
+                    Team t = tiebrokenAFC[i];
+                    System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+                }
+            case ("nfc"):
+                System.out.println("Week " + weekNumber + " NFC Standings:");
+                System.out.println();
+                for(int i = 0; i < tiebrokenNFC.length; i++) {
+                    Team t = tiebrokenNFC[i];
+                    System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+                }
+        }
+    }
 
     //In-Regular Season Menu
-    public static void weeklyMenu(String userInput, Season season, ArrayList<Team> allTeams, int weekNumber) {
+    public static void weeklyMenu(Season season, ArrayList<Team> allTeams, int weekNumber, Team[] tiebrokenAfcEast, Team[] tiebrokenAfcNorth, Team[] tiebrokenAfcSouth, Team[] tiebrokenAfcWest, Team[] tiebrokenNfcEast, Team[] tiebrokenNfcNorth, Team[] tiebrokenNfcSouth, Team[] tiebrokenNfcWest, Team[] tiebrokenAFC, Team[] tiebrokenNFC) {
+        System.out.println("Week " + weekNumber + " complete! Type 'c' to continue or 'help' for a different command");
+        String userInput = StdIn.readString().trim();
         switch(userInput.trim().toLowerCase()) {
             case ("c"):
                 System.out.println("Continuing to Week " + weekNumber);
             case ("help"):
+                System.out.println("COMMANDS:");
+                System.out.println("Standings - shows standings of conferences or divisions based on input");
+                System.out.println("Schedule  - shows full season schedule or a specific team's schedule based on input");
 
             case ("standings"):
-
+                System.out.println("Type: 'Conference' for Conference Standings or 'Division' for Division Standings");
+                String ui = StdIn.readString().trim().toLowerCase();
+                if(ui.equals("conference")) { 
+                    printStandingsConf(season, allTeams, weekNumber, tiebrokenAFC, tiebrokenNFC);
+                } else if(ui.equals("division")) { 
+                    printStandingsDiv(season, allTeams, weekNumber, tiebrokenAfcEast, tiebrokenAfcNorth, tiebrokenAfcSouth, tiebrokenAfcWest, tiebrokenNfcEast, tiebrokenNfcNorth, tiebrokenNfcSouth, tiebrokenNfcWest);
+                } else {
+                    System.out.println("Invalid input! Enter a command ('help' for commands)");
+                }
             case ("schedule"):
+                System.out.println("Type 'Team' for Team Schedule or 'Full' for the full NFL Schedule");
+                String uInp = StdIn.readString().trim().toLowerCase();
+                if(uInp.equals("team")) {
+                    System.out.println("Which team? Type the full team name please.");
+                    StdIn.readLine();
+                    String uInput = StdIn.readLine().trim().toLowerCase();
+                    System.out.println(uInput);
+                    //TODO: error check input for valid team name and add acronyms/city/name only
 
-            case ("results"):
+                    for(Week w : season.weeks) {
+                        for(WeeklyEvent e : w.events) {
+                            Game g = (Game)e;
+                            if((uInput.equals(g.homeTeam.name.toLowerCase())) || (uInput.equals(g.awayTeam.name.toLowerCase()))) {
+                                if(!((g.homeScore == 0) && (g.awayScore == 0))) {
+                                    if(g.awayScore > g.homeScore) {
+                                        System.out.print(g.awayTeam.name + " " + g.awayScore + ", " + g.homeTeam.name + " " + g.homeScore);
+                                        if(g.overtimes > 0) { System.out.print(g.overtimes + "OT"); }
+                                        System.out.println();
+                                    } else {
+                                        System.out.print(g.homeTeam.name + " " + g.homeScore + ", " + g.awayTeam.name + " " + g.awayScore);
+                                        if(g.overtimes > 0) { System.out.print(g.overtimes + "OT"); }
+                                        System.out.println();
+                                    }
+                                } else {
+                                    System.out.println(g.awayTeam.name + " at " + g.homeTeam.name + ", " + g.dateTime + " " + g.specialTitle);
+                                }
+                            }
+                        }
+                    }
+                } else if(uInp.equals("full")) { 
+                    for(Week w : season.weeks) {
+                        System.out.println("WEEK " + w.weekNumber);
+                        for(WeeklyEvent e : w.events) {
+                            Game g = (Game)e;
+                            if(!((g.homeScore == 0) && (g.awayScore == 0))) {
+                                if(g.awayScore > g.homeScore) {
+                                    System.out.print(g.awayTeam.name + " " + g.awayScore + ", " + g.homeTeam.name + " " + g.homeScore);
+                                    if(g.overtimes > 0) { System.out.print(g.overtimes + "OT"); }
+                                    System.out.println();
+                                } else {
+                                    System.out.print(g.homeTeam.name + " " + g.homeScore + ", " + g.awayTeam.name + " " + g.awayScore);
+                                    if(g.overtimes > 0) { System.out.print(g.overtimes + "OT"); }
+                                    System.out.println();
+                                }
+                            } else {
+                                System.out.println(g.awayTeam.name + " at " + g.homeTeam.name + ", " + g.dateTime + " " + g.specialTitle);
+                            }
+                        }
+                    }
+                } else {
+                    System.out.println("Invalid input! Enter a command ('help' for commands)");
+                    weeklyMenu(season, allTeams, weekNumber, tiebrokenAfcEast, tiebrokenAfcNorth, tiebrokenAfcSouth, tiebrokenAfcWest, tiebrokenNfcEast, tiebrokenNfcNorth, tiebrokenNfcSouth, tiebrokenNfcWest, tiebrokenAFC, tiebrokenNFC);
+                }
+            default:
+                System.out.println("Invalid input! Enter a command ('help for commands)");
+                weeklyMenu(season, allTeams, weekNumber, tiebrokenAfcEast, tiebrokenAfcNorth, tiebrokenAfcSouth, tiebrokenAfcWest, tiebrokenNfcEast, tiebrokenNfcNorth, tiebrokenNfcSouth, tiebrokenNfcWest, tiebrokenAFC, tiebrokenNFC);
         }
     }
 
