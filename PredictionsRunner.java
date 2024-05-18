@@ -1,3 +1,5 @@
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -10,19 +12,34 @@ import java.time.LocalDateTime;
 public class PredictionsRunner {
 
     public static void main(String[] args) {
-        //Read listofteams.txt and instantiate the Teams objects
-        ArrayList<Team> allTeams = new ArrayList<Team>();
-        readTeams(allTeams);
+        System.err.println("Error message");
 
-        //Read games.txt and instantiate the Season object (and therefore the WeeklyEvent, Week, and Game objects for this season)
-        ArrayList<Game> allGames = new ArrayList<Game>();
-        Season season = readSeason(allGames, allTeams);
 
-        //Prompt User for first input
-        System.out.println("Welcome to the 2024 NFL Schedule Predictor! Please enter a command (type help for a list of commands)");
-        String userInput = StdIn.readString().trim();
-        System.out.println(((Game)(season.weeks.get(0).events.get(0))).homeTeam.name);
-        mainMenu(userInput, season, allTeams);
+        //Save original inputStream
+        InputStream originalSystemIn = System.in;
+
+        try {
+            //Set test inputs, convert to input stream, and set it
+            String simulatedInput = "start\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nc\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nc\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nc\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nc\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nc\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\nc\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\nc\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nc\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nc\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nc\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nc\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nc\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nc\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nc\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nc\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nc\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nc\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\nno\n3\n2\n";
+            InputStream inputStream = new ByteArrayInputStream(simulatedInput.getBytes());
+            System.setIn(inputStream);
+
+            //Read listofteams.txt and instantiate the Teams objects
+            ArrayList<Team> allTeams = new ArrayList<Team>();
+            readTeams(allTeams);
+
+            //Read games.txt and instantiate the Season object (and therefore the WeeklyEvent, Week, and Game objects for this season)
+            ArrayList<Game> allGames = new ArrayList<Game>();
+            Season season = readSeason(allGames, allTeams);
+
+            //Prompt User for first input
+            System.out.println("Welcome to the 2024 NFL Schedule Predictor! Please enter a command (type help for a list of commands)");
+            String userInput = StdIn.readString().trim();
+            System.out.println(((Game)(season.weeks.get(0).events.get(0))).homeTeam.name);
+            mainMenu(userInput, season, allTeams);
+        } finally {
+            System.setIn(originalSystemIn);
+        }
     }
 
     //Core logic for predicting the season
@@ -242,132 +259,122 @@ public class PredictionsRunner {
         return returnArr;
     }
 
-    //Staging ground for splitting off into different TB scenarios: Division version
     public static void breakTieDiv(Integer wins, Integer losses, Integer ties, List<Team> tiedTeams, ArrayList<Team> allTeams) {
-        if(tiedTeams.size() > 2) {
+        System.out.println("breakTieDiv called with " + tiedTeams.size() + " teams");
+        if (tiedTeams.size() > 2) {
             multiTiebreakerDivStepOne(tiedTeams, allTeams);
-        } else if(tiedTeams.size() == 2) { 
-            twoTeamTiebreakerDivStepOne(tiedTeams, allTeams); 
+        } else if (tiedTeams.size() == 2) {
+            twoTeamTiebreakerDivStepOne(tiedTeams, allTeams);
         }
     }
 
-    //Start the tiebreaker process for multiple teams. This is step 1 - head to head among tied teams
-    //NOTE: This doesn't work for 4-team ties. Must investigate
     public static void multiTiebreakerDivStepOne(List<Team> tiedTeams, ArrayList<Team> allTeams) {
-        
-        // System.out.println("Div m step 1 with " + tiedTeams.size() + " teams");
-        //Loop through each tied team and determine its winning percentage against the other teams (if no games, 0.0)
-        for(Team t : tiedTeams) {
+        System.out.println("multiTiebreakerDivStepOne called with " + tiedTeams.size() + " teams");
+
+        // Calculate win percentage against other tied teams
+        for (Team t : tiedTeams) {
             double recordAgainstOthers = 0.0;
             double gamesAgainstOthers = 0;
             double winsAgainstOthers = 0;
-            for(Team otherTeam : tiedTeams) {
-                if(t.teamsPlayed.contains(otherTeam)) {
+            for (Team otherTeam : tiedTeams) {
+                if (t.teamsPlayed.contains(otherTeam)) {
                     gamesAgainstOthers++;
-                    if(t.teamsBeaten.contains(otherTeam)) { winsAgainstOthers++; }
+                    if (t.teamsBeaten.contains(otherTeam)) {
+                        winsAgainstOthers++;
+                    }
                 }
             }
             if (gamesAgainstOthers > 0) {
-            recordAgainstOthers = winsAgainstOthers / gamesAgainstOthers;
+                recordAgainstOthers = winsAgainstOthers / gamesAgainstOthers;
             }
-
             t.tempWinPctAgainstOthers = recordAgainstOthers;
         }
 
-        // for(Team t : tiedTeams) {
-        //     System.out.println(t.tempWinPctAgainstOthers);
-        // }
+        // Sort the tied teams by win percentage against other tied teams
+        tiedTeams.sort(Comparator.comparingDouble(Team::getTempWinPctAgainstOthers).reversed());
 
-        //Sort the tied teams, best record first
-        Collections.sort(tiedTeams, Comparator.comparingDouble(Team::getTempWinPctAgainstOthers).reversed());
-        for(Team t : tiedTeams) {
-            // System.out.println(t.name + " winning pct vs div opponents already played & tied with: " + t.tempWinPctAgainstOthers);
+        // Debugging information
+        System.out.println("Sorted tied teams by win percentage against each other:");
+        for (Team t : tiedTeams) {
+            System.out.println(t.name + ": " + t.tempWinPctAgainstOthers);
         }
 
-        //Check if the first team is the only one with the best record. If so, recursively call on the rest of the list
-        //If not, determine how many share a winning % and call step two on them, recursively calling step 1 on those eliminated
-        if(tiedTeams.get(0).tempWinPctAgainstOthers != tiedTeams.get(1).tempWinPctAgainstOthers) {
-            // System.out.println(tiedTeams.get(0).name + " has won the tiebreaker based off of h2h win percentage over: " + tiedTeams.get(1).name);
-            List<Team> restOfTeams = tiedTeams.subList(1, tiedTeams.size());
-            // for(Team t : tiedTeams) { System.out.print(t.name + " "); }
-            // System.out.println();
-            // for(Team t : restOfTeams) { System.out.print(t.name + " "); }
-            // System.out.println();
+        if (tiedTeams.size() > 1 && tiedTeams.get(0).tempWinPctAgainstOthers != tiedTeams.get(1).tempWinPctAgainstOthers) {
+            List<Team> restOfTeams = new ArrayList<>(tiedTeams.subList(1, tiedTeams.size()));
+            System.out.println("Calling breakTieDiv with restOfTeams: " + restOfTeams.size() + " teams");
             breakTieDiv(tiedTeams.get(0).wins, tiedTeams.get(0).losses, tiedTeams.get(0).ties, restOfTeams, allTeams);
         } else {
-            int breakIndex = 0;
-            boolean foundFirstNonTied = false;
+            int breakIndex = tiedTeams.size();
             for (int i = 1; i < tiedTeams.size(); i++) {
                 if (tiedTeams.get(i).tempWinPctAgainstOthers != tiedTeams.get(i - 1).tempWinPctAgainstOthers) {
                     breakIndex = i;
-                    foundFirstNonTied = true;
-                    break; // Exit the loop once the first non-tied element is found
+                    break;
                 }
             }
-            // System.out.println("breakIndex: " + breakIndex);
 
-            //Separate into sublists of teams that passed step 1 and didn't
-            List<Team> stillTiedTeams = tiedTeams.subList(0, breakIndex);
-            List<Team> restOfTeams = tiedTeams.subList(breakIndex, tiedTeams.size());
+            List<Team> stillTiedTeams = new ArrayList<>(tiedTeams.subList(0, breakIndex));
+            List<Team> restOfTeams = new ArrayList<>(tiedTeams.subList(breakIndex, tiedTeams.size()));
 
-            // System.out.println("stillTiedTeams size: " + stillTiedTeams.size() + "   and restOfTeams size: " + restOfTeams.size());
+            System.out.println("Still tied teams: " + stillTiedTeams.size() + " teams");
+            System.out.println("Rest of teams: " + restOfTeams.size() + " teams");
 
-            //Call step 2 on those still tied, step 1 on the rest
-            if(stillTiedTeams.size() > 2) {
+            if (stillTiedTeams.size() > 2) {
                 multiTiebreakerDivStepTwo(stillTiedTeams, allTeams);
-            } else {
+            } else if (stillTiedTeams.size() == 2) {
                 twoTeamTiebreakerDivStepOne(stillTiedTeams, allTeams);
-            }      
-            // System.out.println("Got past if stmt");     
-            if(restOfTeams.size() == tiedTeams.size()) {
-                multiTiebreakerDivStepTwo(restOfTeams, allTeams);
-            } else {
+            }
+
+            if (!restOfTeams.isEmpty() && restOfTeams.size() < tiedTeams.size()) {
+                System.out.println("Calling breakTieDiv with restOfTeams: " + restOfTeams.size() + " teams");
                 breakTieDiv(tiedTeams.get(0).wins, tiedTeams.get(0).losses, tiedTeams.get(0).ties, restOfTeams, allTeams);
             }
         }
     }
 
-    //Division tb step 2: division records
     public static void multiTiebreakerDivStepTwo(List<Team> tiedTeams, ArrayList<Team> allTeams) {
-        // System.out.println("Div m step 2");
-        //Set temp win pct to divison win %
-        for(Team t : tiedTeams) {
-            t.tempWinPctAgainstOthers = (double)t.divWins / (double)(t.divWins + t.divLosses);
-        }
-        
-        //Sort based off div record, high to low
-        Collections.sort(tiedTeams, Comparator.comparingDouble(Team::getTempWinPctAgainstOthers).reversed());
+        System.out.println("multiTiebreakerDivStepTwo called with " + tiedTeams.size() + " teams");
 
-        if(tiedTeams.get(0).tempWinPctAgainstOthers != tiedTeams.get(1).tempWinPctAgainstOthers) {
-            // System.out.println(tiedTeams.get(0).name + " has won the tiebreaker based off of h2h win percentage over: " + tiedTeams.get(1).name);
-            List<Team> restOfTeams = tiedTeams.subList(1, tiedTeams.size());
-            // for(Team t : tiedTeams) { System.out.print(t.name + " "); }
-            // System.out.println();
-            // for(Team t : restOfTeams) { System.out.print(t.name + " "); }
-            // System.out.println();
+        for (Team t : tiedTeams) {
+            t.tempWinPctAgainstOthers = (double) t.divWins / (t.divWins + t.divLosses);
+        }
+
+        tiedTeams.sort(Comparator.comparingDouble(Team::getTempWinPctAgainstOthers).reversed());
+
+        // Debugging information
+        System.out.println("Sorted tied teams by division record:");
+        for (Team t : tiedTeams) {
+            System.out.println(t.name + ": " + t.tempWinPctAgainstOthers);
+        }
+
+        if (tiedTeams.size() > 1 && tiedTeams.get(0).tempWinPctAgainstOthers != tiedTeams.get(1).tempWinPctAgainstOthers) {
+            List<Team> restOfTeams = new ArrayList<>(tiedTeams.subList(1, tiedTeams.size()));
+            System.out.println("Calling breakTieDiv with restOfTeams: " + restOfTeams.size() + " teams");
             breakTieDiv(tiedTeams.get(0).wins, tiedTeams.get(0).losses, tiedTeams.get(0).ties, restOfTeams, allTeams);
         } else {
-            int breakIndex = 0;
-            boolean foundFirstNonTied = false;
+            int breakIndex = tiedTeams.size();
             for (int i = 1; i < tiedTeams.size(); i++) {
                 if (tiedTeams.get(i).tempWinPctAgainstOthers != tiedTeams.get(i - 1).tempWinPctAgainstOthers) {
                     breakIndex = i;
-                    foundFirstNonTied = true;
-                    break; // Exit the loop once the first non-tied element is found
+                    break;
                 }
             }
 
-            //Separate into sublists of teams that passed step 1 and didn't
-            List<Team> stillTiedTeams = tiedTeams.subList(0, breakIndex);
-            List<Team> restOfTeams = tiedTeams.subList(breakIndex, tiedTeams.size());
-            
-            //Call step 3 on those still tied, step 1 on the rest
-            if(stillTiedTeams.size() > 2) {
+            List<Team> stillTiedTeams = new ArrayList<>(tiedTeams.subList(0, breakIndex));
+            List<Team> restOfTeams = new ArrayList<>(tiedTeams.subList(breakIndex, tiedTeams.size()));
+
+            System.out.println("Still tied teams: " + stillTiedTeams.size() + " teams");
+            System.out.println("Rest of teams: " + restOfTeams.size() + " teams");
+
+            if (stillTiedTeams.size() > 2) {
                 multiTiebreakerDivStepThree(stillTiedTeams, allTeams);
-            } else {
+            } else if (stillTiedTeams.size() == 2) {
                 twoTeamTiebreakerDivStepOne(stillTiedTeams, allTeams);
-            }            
-            breakTieDiv(tiedTeams.get(0).wins, tiedTeams.get(0).losses, tiedTeams.get(0).ties, restOfTeams, allTeams);
+            }
+
+            if (!restOfTeams.isEmpty() && restOfTeams.size() < tiedTeams.size()) {
+                System.out.println("Calling breakTieDiv with restOfTeams: " + restOfTeams.size() + " teams");
+                breakTieDiv(tiedTeams.get(0).wins, tiedTeams.get(0).losses, tiedTeams.get(0).ties, restOfTeams, allTeams);
+            }
         }
     }
 
@@ -1084,6 +1091,7 @@ public class PredictionsRunner {
                     Team t = tiebrokenAfcEast[i];
                     System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
                 }
+                break;
             case ("afc north"):
                 System.out.println("Week " + weekNumber + " AFC North Standings:");
                 System.out.println();
@@ -1091,6 +1099,7 @@ public class PredictionsRunner {
                     Team t = tiebrokenAfcEast[i];
                     System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
                 }
+                break;
             case ("afc south"):
                 System.out.println("Week " + weekNumber + " AFC South Standings:");
                 System.out.println();
@@ -1098,6 +1107,7 @@ public class PredictionsRunner {
                     Team t = tiebrokenAfcEast[i];
                     System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
                 }
+                break;
             case ("afc west"):
                 System.out.println("Week " + weekNumber + " AFC West Standings:");
                 System.out.println();
@@ -1105,6 +1115,7 @@ public class PredictionsRunner {
                     Team t = tiebrokenAfcEast[i];
                     System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
                 }
+                break;
             case ("nfc east"):
                 System.out.println("Week " + weekNumber + " NFC East Standings:");
                 System.out.println();
@@ -1112,6 +1123,7 @@ public class PredictionsRunner {
                     Team t = tiebrokenAfcEast[i];
                     System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
                 }
+                break;
             case ("nfc north"):
                 System.out.println("Week " + weekNumber + " NFC North Standings:");
                 System.out.println();
@@ -1119,6 +1131,7 @@ public class PredictionsRunner {
                     Team t = tiebrokenAfcEast[i];
                     System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
                 }
+                break;
             case ("nfc south"):
                 System.out.println("Week " + weekNumber + " NFC South Standings:");
                 System.out.println();
@@ -1126,6 +1139,7 @@ public class PredictionsRunner {
                     Team t = tiebrokenAfcEast[i];
                     System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
                 }
+                break;
             case ("nfc west"):
                 System.out.println("Week " + weekNumber + " NFC West Standings:");
                 System.out.println();
@@ -1133,9 +1147,11 @@ public class PredictionsRunner {
                     Team t = tiebrokenAfcEast[i];
                     System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
                 }
+                break;
             default:
                 System.out.println("Invalid input, try again.");
                 printStandingsDiv(season, allTeams, weekNumber, tiebrokenAfcEast, tiebrokenAfcNorth, tiebrokenAfcSouth, tiebrokenAfcWest, tiebrokenNfcEast, tiebrokenNfcNorth, tiebrokenNfcSouth, tiebrokenNfcWest, tiebrokenAFC, tiebrokenNFC);
+                break;
         }
         
         System.out.println("AFC");
@@ -1165,6 +1181,7 @@ public class PredictionsRunner {
                     Team t = tiebrokenAfcEast[i];
                     System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
                 }
+                break;
             case ("afc north"):
                 System.out.println("Week " + weekNumber + " AFC North Standings:");
                 System.out.println();
@@ -1172,6 +1189,7 @@ public class PredictionsRunner {
                     Team t = tiebrokenAfcNorth[i];
                     System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
                 }
+                break;
             case ("afc south"):
                 System.out.println("Week " + weekNumber + " AFC South Standings:");
                 System.out.println();
@@ -1179,6 +1197,7 @@ public class PredictionsRunner {
                     Team t = tiebrokenAfcSouth[i];
                     System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
                 }
+                break;
             case ("afc west"):
                 System.out.println("Week " + weekNumber + " AFC West Standings:");
                 System.out.println();
@@ -1186,6 +1205,7 @@ public class PredictionsRunner {
                     Team t = tiebrokenAfcWest[i];
                     System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
                 }
+                break;
             case ("nfc east"):
                 System.out.println("Week " + weekNumber + " NFC East Standings:");
                 System.out.println();
@@ -1193,6 +1213,7 @@ public class PredictionsRunner {
                     Team t = tiebrokenNfcEast[i];
                     System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
                 }
+                break;
             case ("nfc north"):
                 System.out.println("Week " + weekNumber + " NFC North Standings:");
                 System.out.println();
@@ -1200,6 +1221,7 @@ public class PredictionsRunner {
                     Team t = tiebrokenNfcNorth[i];
                     System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
                 }
+                break;
             case ("nfc south"):
                 System.out.println("Week " + weekNumber + " NFC South Standings:");
                 System.out.println();
@@ -1207,6 +1229,7 @@ public class PredictionsRunner {
                     Team t = tiebrokenNfcSouth[i];
                     System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
                 }
+                break;
             case ("nfc west"):
                 System.out.println("Week " + weekNumber + " NFC West Standings:");
                 System.out.println();
@@ -1214,10 +1237,12 @@ public class PredictionsRunner {
                     Team t = tiebrokenNfcWest[i];
                     System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
                 }
+                break;
             //Error catching
             default:
                 System.out.println("Invalid division name! Try again");
                 printStandingsDiv(season, allTeams, weekNumber, tiebrokenAfcEast, tiebrokenAfcNorth, tiebrokenAfcSouth, tiebrokenAfcWest, tiebrokenNfcEast, tiebrokenNfcNorth, tiebrokenNfcSouth, tiebrokenNfcWest);
+                break;
         }
     }
 
@@ -1236,6 +1261,7 @@ public class PredictionsRunner {
                     Team t = tiebrokenAFC[i];
                     System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
                 }
+                break;
             case ("nfc"):
                 System.out.println("Week " + weekNumber + " NFC Standings:");
                 System.out.println();
@@ -1243,10 +1269,12 @@ public class PredictionsRunner {
                     Team t = tiebrokenNFC[i];
                     System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
                 }
+                break;
             //Error catching
             default:
                 System.out.println("Invalid conference name! Try again");
                 printStandingsConf(season, allTeams, weekNumber, tiebrokenAFC, tiebrokenNFC);
+                break;
         }
     }
 
@@ -1523,7 +1551,7 @@ public class PredictionsRunner {
         Week conferenceWeekend = new Week(true, 19, eventsConf);
         //TODO: Add home stadiums to Team.java
         Game afcChampionship = new Game(afcConfRdTeams[0], afcConfRdTeams[1], "Playoff Venue", LocalDateTime.parse("2024-01-14T16:30"), "Wild Card Weekend Game 3");
-        Game nfcChampionship = new Game(nfcConfRdTeams[1], nfcConfRdTeams[2], "Playoff Venue", LocalDateTime.parse("2024-01-13T16:30"), "Wild Card Weekend Game 1");
+        Game nfcChampionship = new Game(nfcConfRdTeams[0], nfcConfRdTeams[1], "Playoff Venue", LocalDateTime.parse("2024-01-13T16:30"), "Wild Card Weekend Game 1");
         divisionalWeekend.events.add(afcChampionship);
         divisionalWeekend.events.add(nfcChampionship);
 
@@ -1580,14 +1608,17 @@ public class PredictionsRunner {
     //In-Regular Season Menu
     public static void weeklyMenu(Season season, ArrayList<Team> allTeams, int weekNumber, Team[] tiebrokenAfcEast, Team[] tiebrokenAfcNorth, Team[] tiebrokenAfcSouth, Team[] tiebrokenAfcWest, Team[] tiebrokenNfcEast, Team[] tiebrokenNfcNorth, Team[] tiebrokenNfcSouth, Team[] tiebrokenNfcWest, Team[] tiebrokenAFC, Team[] tiebrokenNFC) {
         System.out.println("Week " + weekNumber + " complete! Type 'c' to continue or 'help' for a different command");
+        StdIn.readLine();
         String userInput = StdIn.readString().trim();
         switch(userInput.trim().toLowerCase()) {
             case ("c"):
                 System.out.println("Continuing to Week " + weekNumber);
+                break;
             case ("help"):
                 System.out.println("COMMANDS:");
                 System.out.println("Standings - shows standings of conferences or divisions based on input");
                 System.out.println("Schedule  - shows full season schedule or a specific team's schedule based on input");
+                weeklyMenu(season, allTeams, weekNumber, tiebrokenAfcEast, tiebrokenAfcNorth, tiebrokenAfcSouth, tiebrokenAfcWest, tiebrokenNfcEast, tiebrokenNfcNorth, tiebrokenNfcSouth, tiebrokenNfcWest, tiebrokenAFC, tiebrokenNFC);
             case ("standings"):
                 System.out.println("Type: 'Conference' for Conference Standings or 'Division' for Division Standings");
                 StdIn.readLine();
@@ -1669,12 +1700,14 @@ public class PredictionsRunner {
                 System.out.println("Enter a new command: ");
                 userInput = StdIn.readString().trim();
                 mainMenu(userInput, season, allTeams);
+                break;
             case ("start"):
                 System.out.println("Beginning schedule predictions...");
                 predictionsStart(season, allTeams);
                 userInput = StdIn.readString().trim();
                 System.out.println("Enter a new command: ");
                 mainMenu(userInput, season, allTeams);
+                break;
             case("exit"):
                 System.out.println("Thank you for using the software!");
                 break;
@@ -1684,6 +1717,7 @@ public class PredictionsRunner {
                 System.out.println("Enter a new command: ");
                 userInput = StdIn.readString().trim();
                 mainMenu(userInput, season, allTeams);
+                break;
         }
     }
 
@@ -1754,3 +1788,18 @@ public class PredictionsRunner {
         }
     }
 }
+
+/* TO DO:
+Everything marked //TODO, but off the top of my head:
+-finish conference tiebreakers (ugh)
+-menu after regular season conclusion (jumps directly to playoffs rn)
+--don't auto-show standings without being prompted
+-unit test tiebreaker scenarios (ugh)
+-probably delete the fields i dont need from teams.java
+-save previously done season as an input file
+--ask for input file to pick up in midseason?
+-update to 2024 schedule
+-README for any potential users
+-loots of error checking for user inputs
+--"no" on OT checking
+--menus
