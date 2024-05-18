@@ -25,7 +25,7 @@ public class PredictionsRunner {
         mainMenu(userInput, season, allTeams);
     }
 
-    //Core logic for predicting each game
+    //Core logic for predicting the season
     public static void predictionsStart(Season season, ArrayList<Team> allTeams) {
         //Cycle through each week in the logic
         for(Week w : season.weeks) {
@@ -39,8 +39,6 @@ public class PredictionsRunner {
             }
             updateStandings(season, w, allTeams);
         }
-
-
     }
 
     //Update standings upon request or at end of each regular season week
@@ -130,8 +128,12 @@ public class PredictionsRunner {
         Team[] tiebrokenAFC = confTB(rawAfcTeamsArr, allTeams);
         Team[] tiebrokenNFC = confTB(rawNfcTeamsArr, allTeams);
 
-        //End of Week Menu
-        weeklyMenu(season, allTeams, week.weekNumber, tiebrokenAfcEast, tiebrokenAfcNorth, tiebrokenAfcSouth, tiebrokenAfcWest, tiebrokenNfcEast, tiebrokenNfcNorth, tiebrokenNfcSouth, tiebrokenNfcWest, tiebrokenAFC, tiebrokenNFC);
+        //End of Week Menu or Start Postseason Menu
+        if(week.weekNumber < 18) {
+            weeklyMenu(season, allTeams, week.weekNumber, tiebrokenAfcEast, tiebrokenAfcNorth, tiebrokenAfcSouth, tiebrokenAfcWest, tiebrokenNfcEast, tiebrokenNfcNorth, tiebrokenNfcSouth, tiebrokenNfcWest, tiebrokenAFC, tiebrokenNFC);
+        } else {
+            endOfSeasonMenu(season, allTeams, week.weekNumber, tiebrokenAfcEast, tiebrokenAfcNorth, tiebrokenAfcSouth, tiebrokenAfcWest, tiebrokenNfcEast, tiebrokenNfcNorth, tiebrokenNfcSouth, tiebrokenNfcWest, tiebrokenAFC, tiebrokenNFC);
+        }
     }
 
     //Tiebreak conference standings
@@ -1152,7 +1154,7 @@ public class PredictionsRunner {
     public static void printStandingsDiv(Season season, ArrayList<Team> allTeams, int weekNumber, Team[] tiebrokenAfcEast, Team[] tiebrokenAfcNorth, Team[] tiebrokenAfcSouth, Team[] tiebrokenAfcWest, Team[] tiebrokenNfcEast, Team[] tiebrokenNfcNorth, Team[] tiebrokenNfcSouth, Team[] tiebrokenNfcWest) {
         //Get user input for division
         System.out.println("Which Division?");
-        String userInput = StdIn.readString().trim().toLowerCase();
+        String userInput = StdIn.readLine().trim().toLowerCase();
 
         //Print division standings based on user input
         switch(userInput) {
@@ -1219,6 +1221,7 @@ public class PredictionsRunner {
         }
     }
 
+    //Print conference standings upon user input
     public static void printStandingsConf(Season season, ArrayList<Team> allTeams, int weekNumber, Team[] tiebrokenAFC, Team[] tiebrokenNFC) {
         //Get user input for conference
         System.out.println("Which Conference?");
@@ -1247,6 +1250,333 @@ public class PredictionsRunner {
         }
     }
 
+    //End of season menu, initiate postseason
+    public static void endOfSeasonMenu(Season season, ArrayList<Team> allTeams, int weekNumber, Team[] tiebrokenAfcEast, Team[] tiebrokenAfcNorth, Team[] tiebrokenAfcSouth, Team[] tiebrokenAfcWest, Team[] tiebrokenNfcEast, Team[] tiebrokenNfcNorth, Team[] tiebrokenNfcSouth, Team[] tiebrokenNfcWest, Team[] tiebrokenAFC, Team[] tiebrokenNFC) {
+        System.out.println("END OF SEASON RESULTS:");
+        System.out.println();
+        System.out.println("Conference Standings:");
+        System.out.println();
+        System.out.println("AFC");
+        for(int i = 0; i < tiebrokenAFC.length; i++) {
+            Team t = tiebrokenAFC[i];
+            System.out.println((i+1) + " - " + t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+        }
+        System.out.println();
+        System.out.println("NFC");
+        for(int i = 0; i < tiebrokenNFC.length; i++) {
+            Team t = tiebrokenNFC[i];
+            System.out.println((i+1) + " - " + t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+        }
+        System.out.println("Division Standings:");
+        System.out.println();
+        System.out.println("AFC East Final Standings:");
+        for(int i = 0; i < tiebrokenAfcEast.length; i++) {
+            Team t = tiebrokenAfcEast[i];
+            System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+        }
+        System.out.println();
+        System.out.println("AFC North Final Standings:");
+        for(int i = 0; i < tiebrokenAfcNorth.length; i++) {
+            Team t = tiebrokenAfcNorth[i];
+            System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+        }
+        System.out.println();
+        System.out.println("AFC South Final Standings:");
+        for(int i = 0; i < tiebrokenAfcSouth.length; i++) {
+            Team t = tiebrokenAfcSouth[i];
+            System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+        }
+        System.out.println();
+        System.out.println("AFC West Final Standings:");
+        for(int i = 0; i < tiebrokenAfcWest.length; i++) {
+            Team t = tiebrokenAfcWest[i];
+            System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+        }
+        System.out.println();
+        System.out.println("NFC East Final Standings:");
+        for(int i = 0; i < tiebrokenNfcEast.length; i++) {
+            Team t = tiebrokenNfcEast[i];
+            System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+        }
+        System.out.println();
+        System.out.println("NFC North Final Standings:");
+        for(int i = 0; i < tiebrokenNfcNorth.length; i++) {
+            Team t = tiebrokenNfcNorth[i];
+            System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+        }
+        System.out.println();
+        System.out.println("NFC South Final Standings:");
+        for(int i = 0; i < tiebrokenNfcSouth.length; i++) {
+            Team t = tiebrokenNfcSouth[i];
+            System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+        }
+        System.out.println();
+        System.out.println("NFC West Final Standings:");
+        for(int i = 0; i < tiebrokenNfcWest.length; i++) {
+            Team t = tiebrokenNfcWest[i];
+            System.out.println(t.name + " " + t.wins + "W " + t.losses + "L " + t.ties + "T ");
+        }
+
+        //WILD CARD ROUND
+
+        ArrayList<WeeklyEvent> eventsWC = new ArrayList<WeeklyEvent>();
+        Week wildCardWeekend = new Week(true, 19, eventsWC);
+        //TODO: Add home stadiums to Team.java
+        Game wcGm1Afc = new Game(tiebrokenAFC[1], tiebrokenAFC[6], "Playoff Venue", LocalDateTime.parse("2024-01-13T13:00"), "Wild Card Weekend Game 1");
+        Game wcGm2Afc = new Game(tiebrokenAFC[2], tiebrokenAFC[5], "Playoff Venue", LocalDateTime.parse("2024-01-14T16:30"), "Wild Card Weekend Game 5");
+        Game wcGm3Afc = new Game(tiebrokenAFC[3], tiebrokenAFC[4], "Playoff Venue", LocalDateTime.parse("2024-01-13T20:30"), "Wild Card Weekend Game 3");
+        Game wcGm1Nfc = new Game(tiebrokenNFC[1], tiebrokenNFC[6], "Playoff Venue", LocalDateTime.parse("2024-01-14T13:00"), "Wild Card Weekend Game 4");
+        Game wcGm2Nfc = new Game(tiebrokenNFC[1], tiebrokenNFC[6], "Playoff Venue", LocalDateTime.parse("2024-01-13T16:30"), "Wild Card Weekend Game 2");
+        Game wcGm3Nfc = new Game(tiebrokenNFC[1], tiebrokenNFC[6], "Playoff Venue", LocalDateTime.parse("2024-01-14T20:30"), "Wild Card Weekend Game 6");
+        wildCardWeekend.events.add(wcGm1Afc);
+        wildCardWeekend.events.add(wcGm2Afc);
+        wildCardWeekend.events.add(wcGm3Afc);
+        wildCardWeekend.events.add(wcGm1Nfc);
+        wildCardWeekend.events.add(wcGm2Nfc);
+        wildCardWeekend.events.add(wcGm3Nfc);
+
+        Team[] afcDivisionalRdTeams = new Team[4];
+        Team[] nfcDivisionalRdTeams = new Team[4];
+        int wcGm1AfcWinnerSeed = 0;
+        int wcGm2AfcWinnerSeed = 0;
+        int wcGm3AfcWinnerSeed = 0;
+        int wcGm1NfcWinnerSeed = 0;
+        int wcGm2NfcWinnerSeed = 0;
+        int wcGm3NfcWinnerSeed = 0;
+        int[] afcWinningSeedsWC = {wcGm1AfcWinnerSeed, wcGm2AfcWinnerSeed, wcGm3AfcWinnerSeed};
+        int[] nfcWinningSeedsWC = {wcGm1NfcWinnerSeed, wcGm2NfcWinnerSeed, wcGm3NfcWinnerSeed};
+
+        System.out.println("WILD CARD WEEKEND:");
+        //TODO: Playoff games can't tie. Add logic
+        predictGame(wcGm1Afc);
+        if(wcGm1Afc.homeScore > wcGm1Afc.awayScore) {
+            Team wcGm1AfcWinner = wcGm1Afc.homeTeam;
+            wcGm1AfcWinnerSeed = 2;
+        } else {
+            Team wcGm1AfcWinner = wcGm1Afc.awayTeam; 
+            wcGm1AfcWinnerSeed = 7;
+        }
+        predictGame(wcGm2Afc);
+        if(wcGm2Afc.homeScore > wcGm2Afc.awayScore) {
+            Team wcGm2AfcWinner = wcGm2Afc.homeTeam;
+            wcGm2AfcWinnerSeed = 3;
+        } else { 
+            Team wcGm2AfcWinner = wcGm2Afc.awayTeam; 
+            wcGm2AfcWinnerSeed = 6;
+        }
+        predictGame(wcGm3Afc);
+        if(wcGm3Afc.homeScore > wcGm3Afc.awayScore) {
+            Team wcGm3AfcWinner = wcGm3Afc.homeTeam;
+            wcGm3AfcWinnerSeed = 4;
+        } else { 
+            Team wcGm3AfcWinner = wcGm3Afc.awayTeam; 
+            wcGm3AfcWinnerSeed = 5;
+        }
+        predictGame(wcGm1Nfc);
+        if(wcGm1Nfc.homeScore > wcGm1Nfc.awayScore) {
+            Team wcGm1NfcWinner = wcGm1Nfc.homeTeam;
+            wcGm1NfcWinnerSeed = 2;
+        } else { 
+            Team wcGm1NfcWinner = wcGm1Nfc.awayTeam; 
+            wcGm1NfcWinnerSeed = 7;
+        }
+        predictGame(wcGm2Nfc);
+        if(wcGm2Nfc.homeScore > wcGm2Nfc.awayScore) {
+            Team wcGm2NfcWinner = wcGm2Nfc.homeTeam;
+            wcGm2NfcWinnerSeed = 3;
+        } else { 
+            Team wcGm2NfcWinner = wcGm2Nfc.awayTeam; 
+            wcGm2NfcWinnerSeed = 6;
+        }
+        predictGame(wcGm3Nfc);
+        if(wcGm3Nfc.homeScore > wcGm3Nfc.awayScore) {
+            Team wcGm3NfcWinner = wcGm3Nfc.homeTeam;
+            wcGm3NfcWinnerSeed = 4;
+        } else { 
+            Team wcGm3NfcWinner = wcGm3Nfc.awayTeam; 
+            wcGm3AfcWinnerSeed = 5;
+        }
+
+        // Sort the AFC WC Winners array using a simple sorting algorithm
+        for (int i = 0; i < afcWinningSeedsWC.length - 1; i++) {
+            for (int j = i + 1; j < afcWinningSeedsWC.length; j++) {
+                if (afcWinningSeedsWC[i] > afcWinningSeedsWC[j]) {
+                    int temp = afcWinningSeedsWC[i];
+                    afcWinningSeedsWC[i] = afcWinningSeedsWC[j];
+                    afcWinningSeedsWC[j] = temp;
+                }
+            }
+        }
+        
+        afcDivisionalRdTeams[0] = tiebrokenAFC[0];
+        for(int i = 0; i < afcWinningSeedsWC.length; i++) {
+            afcDivisionalRdTeams[i+1] = tiebrokenAFC[afcWinningSeedsWC[i]];
+        }
+
+        // Sort the NFC WC Winners array using a simple sorting algorithm
+        for (int i = 0; i < nfcWinningSeedsWC.length - 1; i++) {
+            for (int j = i + 1; j < nfcWinningSeedsWC.length; j++) {
+                if (nfcWinningSeedsWC[i] > nfcWinningSeedsWC[j]) {
+                    int temp = nfcWinningSeedsWC[i];
+                    nfcWinningSeedsWC[i] = nfcWinningSeedsWC[j];
+                    nfcWinningSeedsWC[j] = temp;
+                }
+            }
+        }
+
+        nfcDivisionalRdTeams[0] = tiebrokenNFC[0];
+        for(int i = 0; i < nfcWinningSeedsWC.length; i++) {
+            nfcDivisionalRdTeams[i+1] = tiebrokenNFC[nfcWinningSeedsWC[i]];
+        }
+
+        //DIVISIONAL ROUND
+
+        ArrayList<WeeklyEvent> eventsDiv = new ArrayList<WeeklyEvent>();
+        Week divisionalWeekend = new Week(true, 19, eventsDiv);
+        //TODO: Add home stadiums to Team.java
+        Game divGm1Afc = new Game(afcDivisionalRdTeams[0], afcDivisionalRdTeams[3], "Playoff Venue", LocalDateTime.parse("2024-01-14T16:30"), "Wild Card Weekend Game 3");
+        Game divGm2Afc = new Game(afcDivisionalRdTeams[1], afcDivisionalRdTeams[2], "Playoff Venue", LocalDateTime.parse("2024-01-13T20:30"), "Wild Card Weekend Game 2");
+        Game divGm1Nfc = new Game(nfcDivisionalRdTeams[1], nfcDivisionalRdTeams[2], "Playoff Venue", LocalDateTime.parse("2024-01-13T16:30"), "Wild Card Weekend Game 1");
+        Game divGm2Nfc = new Game(nfcDivisionalRdTeams[0], nfcDivisionalRdTeams[3], "Playoff Venue", LocalDateTime.parse("2024-01-14T20:30"), "Wild Card Weekend Game 4");
+        divisionalWeekend.events.add(divGm1Afc);
+        divisionalWeekend.events.add(divGm2Afc);
+        divisionalWeekend.events.add(divGm1Nfc);
+        divisionalWeekend.events.add(divGm2Nfc);
+
+        Team[] afcConfRdTeams = new Team[2];
+        Team[] nfcConfRdTeams = new Team[2];
+        int divGm1AfcWinnerSeed = 0;
+        int divGm2AfcWinnerSeed = 0;
+        int divGm1NfcWinnerSeed = 0;
+        int divGm2NfcWinnerSeed = 0;
+        int[] afcWinningSeedsDiv = {divGm1AfcWinnerSeed, divGm2AfcWinnerSeed};
+        int[] nfcWinningSeedsDiv = {divGm1NfcWinnerSeed, divGm2NfcWinnerSeed};
+
+        System.out.println("DIVISIONAL ROUND WEEKEND:");
+        //TODO: Playoff games can't tie. Add logic
+        predictGame(divGm1Afc);
+        if(divGm1Afc.homeScore > divGm1Afc.awayScore) {
+            Team divGm1AfcWinner = divGm1Afc.homeTeam;
+            divGm1AfcWinnerSeed = 1;
+        } else {
+            Team divGm1AfcWinner = divGm1Afc.awayTeam; 
+            divGm1AfcWinnerSeed = afcWinningSeedsWC[3];
+        }
+        predictGame(divGm2Afc);
+        if(divGm2Afc.homeScore > divGm2Afc.awayScore) {
+            Team divGm2AfcWinner = divGm2Afc.homeTeam;
+            divGm2AfcWinnerSeed = afcWinningSeedsWC[1];
+        } else { 
+            Team divGm2AfcWinner = divGm2Afc.awayTeam; 
+            divGm2AfcWinnerSeed = afcWinningSeedsWC[2];
+        }
+        predictGame(divGm1Nfc);
+        if(divGm1Nfc.homeScore > divGm1Nfc.awayScore) {
+            Team divGm1NfcWinner = divGm1Nfc.homeTeam;
+            divGm1NfcWinnerSeed = nfcWinningSeedsWC[1];
+        } else { 
+            Team divGm1NfcWinner = divGm1Nfc.awayTeam; 
+            divGm1NfcWinnerSeed = nfcWinningSeedsWC[2];
+        }
+        predictGame(divGm2Nfc);
+        if(divGm2Nfc.homeScore > divGm2Nfc.awayScore) {
+            Team divGm2NfcWinner = divGm2Nfc.homeTeam;
+            divGm2NfcWinnerSeed = 1;
+        } else { 
+            Team divGm2NfcWinner = divGm2Nfc.awayTeam; 
+            divGm2NfcWinnerSeed = nfcWinningSeedsWC[3];
+        }
+
+        // Sort the AFC WC Winners array using a simple sorting algorithm
+        for (int i = 0; i < afcWinningSeedsDiv.length - 1; i++) {
+            for (int j = i + 1; j < afcWinningSeedsDiv.length; j++) {
+                if (afcWinningSeedsDiv[i] > afcWinningSeedsDiv[j]) {
+                    int temp = afcWinningSeedsDiv[i];
+                    afcWinningSeedsDiv[i] = afcWinningSeedsDiv[j];
+                    afcWinningSeedsDiv[j] = temp;
+                }
+            }
+        }
+        
+        for(int i = 0; i < afcWinningSeedsDiv.length; i++) {
+            afcConfRdTeams[i] = tiebrokenAFC[afcWinningSeedsDiv[i]];
+        }
+
+        // Sort the NFC WC Winners array using a simple sorting algorithm
+        for (int i = 0; i < nfcWinningSeedsDiv.length - 1; i++) {
+            for (int j = i + 1; j < nfcWinningSeedsDiv.length; j++) {
+                if (nfcWinningSeedsDiv[i] > nfcWinningSeedsDiv[j]) {
+                    int temp = nfcWinningSeedsDiv[i];
+                    nfcWinningSeedsDiv[i] = nfcWinningSeedsDiv[j];
+                    nfcWinningSeedsDiv[j] = temp;
+                }
+            }
+        }
+
+        for(int i = 0; i < nfcWinningSeedsDiv.length; i++) {
+            nfcConfRdTeams[i] = tiebrokenNFC[nfcWinningSeedsDiv[i]];
+        }
+
+        //CONFERENCE ROUND
+
+        ArrayList<WeeklyEvent> eventsConf = new ArrayList<WeeklyEvent>();
+        Week conferenceWeekend = new Week(true, 19, eventsConf);
+        //TODO: Add home stadiums to Team.java
+        Game afcChampionship = new Game(afcConfRdTeams[0], afcConfRdTeams[1], "Playoff Venue", LocalDateTime.parse("2024-01-14T16:30"), "Wild Card Weekend Game 3");
+        Game nfcChampionship = new Game(nfcConfRdTeams[1], nfcConfRdTeams[2], "Playoff Venue", LocalDateTime.parse("2024-01-13T16:30"), "Wild Card Weekend Game 1");
+        divisionalWeekend.events.add(afcChampionship);
+        divisionalWeekend.events.add(nfcChampionship);
+
+        Team[] superBowlTeams = new Team[2];
+        //int confGm1AfcWinnerSeed = 0;
+        //int confGm1NfcWinnerSeed = 0;
+        //int[] afcWinningSeedsDiv = {confGm1AfcWinnerSeed, confGm2AfcWinnerSeed};
+        //int[] nfcWinningSeedsDiv = {confGm1NfcWinnerSeed, confGm2NfcWinnerSeed};
+
+        System.out.println("CONFERENCE CHAMPIONSHIP WEEKEND:");
+        //TODO: Playoff games can't tie. Add logic
+        predictGame(afcChampionship);
+        if(afcChampionship.homeScore > afcChampionship.awayScore) {
+            superBowlTeams[0] = afcChampionship.homeTeam;
+            //afcChampionshipWinnerSeed = 1;
+        } else {
+            superBowlTeams[0] = afcChampionship.awayTeam; 
+            //afcChampionshipWinnerSeed = afcWinningSeedsWC[3];
+        }
+        predictGame(nfcChampionship);
+        if(nfcChampionship.homeScore > nfcChampionship.awayScore) {
+            superBowlTeams[1] = nfcChampionship.homeTeam;
+            //nfcChampionshipWinnerSeed = nfcWinningSeedsWC[1];
+        } else { 
+            superBowlTeams[1] = nfcChampionship.awayTeam; 
+            //nfcChampionshipWinnerSeed = nfcWinningSeedsWC[2];
+        }
+
+        //SUPER BOWL 59
+
+        ArrayList<WeeklyEvent> superBowlWeek = new ArrayList<WeeklyEvent>();
+        Week superBowlWeekend = new Week(true, 19, superBowlWeek);
+        //TODO: Add home stadiums to Team.java
+        Game superBowl = new Game(superBowlTeams[0], superBowlTeams[1], "Caesars Superdome", LocalDateTime.parse("2025-02-09T18:30"), "Super Bowl 59");
+        divisionalWeekend.events.add(superBowl);
+
+        //int confGm1AfcWinnerSeed = 0;
+        //int confGm1NfcWinnerSeed = 0;
+        //int[] afcWinningSeedsDiv = {confGm1AfcWinnerSeed, confGm2AfcWinnerSeed};
+        //int[] nfcWinningSeedsDiv = {confGm1NfcWinnerSeed, confGm2NfcWinnerSeed};
+
+        System.out.println("SUPER BOWL 59:");
+        //TODO: Playoff games can't tie. Add logic
+        predictGame(superBowl);
+        if(superBowl.homeScore > superBowl.awayScore) {
+            System.out.println("The season has concluded! The Champions of Super Bowl 59 are the " + superBowl.homeTeam.name);
+            //afcChampionshipWinnerSeed = 1;
+        } else {
+            System.out.println("The season has concluded! The Champions of Super Bowl 59 are the " + superBowl.homeTeam.name);
+            //afcChampionshipWinnerSeed = afcWinningSeedsWC[3];
+        }
+    }
+
     //In-Regular Season Menu
     public static void weeklyMenu(Season season, ArrayList<Team> allTeams, int weekNumber, Team[] tiebrokenAfcEast, Team[] tiebrokenAfcNorth, Team[] tiebrokenAfcSouth, Team[] tiebrokenAfcWest, Team[] tiebrokenNfcEast, Team[] tiebrokenNfcNorth, Team[] tiebrokenNfcSouth, Team[] tiebrokenNfcWest, Team[] tiebrokenAFC, Team[] tiebrokenNFC) {
         System.out.println("Week " + weekNumber + " complete! Type 'c' to continue or 'help' for a different command");
@@ -1258,9 +1588,9 @@ public class PredictionsRunner {
                 System.out.println("COMMANDS:");
                 System.out.println("Standings - shows standings of conferences or divisions based on input");
                 System.out.println("Schedule  - shows full season schedule or a specific team's schedule based on input");
-
             case ("standings"):
                 System.out.println("Type: 'Conference' for Conference Standings or 'Division' for Division Standings");
+                StdIn.readLine();
                 String ui = StdIn.readString().trim().toLowerCase();
                 if(ui.equals("conference")) { 
                     printStandingsConf(season, allTeams, weekNumber, tiebrokenAFC, tiebrokenNFC);

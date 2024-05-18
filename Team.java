@@ -14,6 +14,8 @@ public class Team {
     public int confLosses;
     public int confTies;
     public boolean madePlayoffs;
+    //TODO: update madePlayoffs if a team made the playoffs
+    //TODO: and wondivision and wonconference or just delete these i dont really need them
     public boolean wonDivision;
     public boolean oneSeed;
     public boolean wonConference;
